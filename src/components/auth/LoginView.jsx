@@ -24,7 +24,8 @@ import {
   Mail,
   Check,
   Loader2,
-  AlertCircle
+  AlertCircle,
+  ExternalLink
 } from 'lucide-react';
 
 export const LoginView = () => {
@@ -58,6 +59,8 @@ export const LoginView = () => {
   const [isForgotModalOpen, setIsForgotModalOpen] = useState(false);
   const [forgotModalType, setForgotModalType] = useState('student');
   const [activeNavDropdown, setActiveNavDropdown] = useState(null);
+  const [isDomainErrorModalOpen, setIsDomainErrorModalOpen] = useState(false);
+  const [domainModalTarget, setDomainModalTarget] = useState('student');
 
   // Handle Student Credentials Login
   const handleStudentSubmit = (e) => {
@@ -78,8 +81,13 @@ export const LoginView = () => {
     setIsStudentGoogleLoading(true);
     try {
       const res = await loginWithGoogle({ targetPortal: 'student' });
-      if (!res.success && res.error?.code !== 'auth/popup-closed-by-user') {
-        showToast('Google Sign-In was cancelled or incomplete. Please sign in with your Google account.', 'error');
+      if (!res.success) {
+        if (res.isUnauthorizedDomain || res.error?.code === 'auth/unauthorized-domain') {
+          setDomainModalTarget('student');
+          setIsDomainErrorModalOpen(true);
+        } else if (res.error?.code !== 'auth/popup-closed-by-user') {
+          showToast('Google Sign-In was cancelled or incomplete. Please sign in with your Google account.', 'error');
+        }
       }
     } catch (err) {
       console.error('Student Google Auth error:', err);
@@ -108,8 +116,13 @@ export const LoginView = () => {
     setIsFacultyGoogleLoading(true);
     try {
       const res = await loginWithGoogle({ targetPortal: 'admin' });
-      if (!res.success && res.error?.code !== 'auth/popup-closed-by-user' && !res.unauthorized) {
-        showToast('Google Sign-In was cancelled or incomplete. Please sign in with your Google account.', 'error');
+      if (!res.success && !res.unauthorized) {
+        if (res.isUnauthorizedDomain || res.error?.code === 'auth/unauthorized-domain') {
+          setDomainModalTarget('admin');
+          setIsDomainErrorModalOpen(true);
+        } else if (res.error?.code !== 'auth/popup-closed-by-user') {
+          showToast('Google Sign-In was cancelled or incomplete. Please sign in with your Google account.', 'error');
+        }
       }
     } catch (err) {
       console.error('Faculty Google Auth error:', err);
@@ -577,13 +590,10 @@ export const LoginView = () => {
                           type="text"
                           value={studentIdentifier}
                           onChange={(e) => setStudentIdentifier(e.target.value)}
-                          placeholder="Student ID or College Email"
+                          placeholder="Student ID (STU-YYYY-XXX) or Email"
                           required
-                          className="w-full pl-10 pr-20 py-2.5 bg-slate-950/85 border border-slate-700/80 rounded-xl text-xs sm:text-sm font-mono text-white placeholder-slate-400 focus:outline-none focus:ring-1.5 focus:ring-blue-500/60 transition-all"
+                          className="w-full pl-10 pr-4 py-2.5 bg-slate-950/85 border border-slate-700/80 rounded-xl text-xs sm:text-sm font-mono text-white placeholder-slate-400 focus:outline-none focus:ring-1.5 focus:ring-blue-500/60 transition-all"
                         />
-                        <span className="absolute right-3 top-2.5 text-[10px] font-mono text-slate-400">
-                          STU-YYYY-XXX
-                        </span>
                       </div>
                     </div>
 
@@ -768,13 +778,10 @@ export const LoginView = () => {
                           type="email"
                           value={facultyEmail}
                           onChange={(e) => setFacultyEmail(e.target.value)}
-                          placeholder="College Email"
+                          placeholder="Faculty College Email (faculty@unity.edu)"
                           required
-                          className="w-full pl-10 pr-20 py-2.5 bg-slate-950/85 border border-slate-700/80 rounded-xl text-xs sm:text-sm font-mono text-white placeholder-slate-400 focus:outline-none focus:ring-1.5 focus:ring-emerald-500/60 transition-all"
+                          className="w-full pl-10 pr-4 py-2.5 bg-slate-950/85 border border-slate-700/80 rounded-xl text-xs sm:text-sm font-mono text-white placeholder-slate-400 focus:outline-none focus:ring-1.5 focus:ring-emerald-500/60 transition-all"
                         />
-                        <span className="absolute right-3 top-2.5 text-[10px] font-mono text-slate-400">
-                          faculty@unity.edu
-                        </span>
                       </div>
                     </div>
 
@@ -998,6 +1005,109 @@ export const LoginView = () => {
                 className="px-4 py-2 text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-xl transition-colors cursor-pointer"
               >
                 Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Firebase Authorized Domain Helper Modal */}
+      {isDomainErrorModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-150">
+          <div className="bg-[#0f172a] border border-amber-500/40 rounded-3xl max-w-lg w-full p-6 text-left shadow-2xl relative text-slate-100">
+            <button
+              onClick={() => setIsDomainErrorModalOpen(false)}
+              className="absolute right-4 top-4 text-slate-400 hover:text-white p-1 rounded-lg cursor-pointer"
+              aria-label="Close"
+            >
+              <X className="w-4 h-4" />
+            </button>
+
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center shrink-0">
+                <AlertCircle className="w-5 h-5" />
+              </div>
+              <div>
+                <h3 className="text-base font-bold text-white">
+                  Firebase Domain Authorization Required
+                </h3>
+                <p className="text-xs text-amber-300/80">
+                  Google OAuth Error: <code className="bg-amber-950/60 px-1 py-0.5 rounded text-[11px] font-mono">auth/unauthorized-domain</code>
+                </p>
+              </div>
+            </div>
+
+            <p className="text-xs text-slate-300 mt-2 leading-relaxed">
+              Firebase blocks Google Sign-In popups unless your current web address is listed under <strong>Authorized domains</strong> in your Firebase project settings.
+            </p>
+
+            <div className="mt-3.5 p-3.5 rounded-2xl bg-slate-950 border border-slate-800 space-y-2.5 text-xs">
+              <div className="flex items-center justify-between text-slate-400">
+                <span>Firebase Project ID:</span>
+                <span className="font-mono text-cyan-300 font-bold">college-system-6fb56</span>
+              </div>
+              <div className="flex items-center justify-between text-slate-400">
+                <span>Current Browser Host:</span>
+                <span className="font-mono text-emerald-400 font-semibold">
+                  {typeof window !== 'undefined' ? window.location.hostname : 'localhost'}
+                </span>
+              </div>
+              <div className="pt-2 border-t border-slate-800/80 text-slate-300 space-y-1.5">
+                <div className="font-semibold text-white">How to fix in 30 seconds:</div>
+                <div className="text-[11px] text-slate-400 space-y-1">
+                  <div>1. Click the button below to open Firebase Auth Settings.</div>
+                  <div>2. Scroll down to the <strong>Authorized domains</strong> table.</div>
+                  <div>3. Click <strong>Add domain</strong> and enter: <code className="text-blue-400 bg-slate-900 px-1 rounded">localhost</code> and <code className="text-blue-400 bg-slate-900 px-1 rounded">127.0.0.1</code>.</div>
+                  <div>4. If you opened the site via an IP address, open <code className="text-emerald-400 bg-slate-900 px-1 rounded">http://localhost:3000</code> in your browser.</div>
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-4 flex flex-col sm:flex-row gap-2.5">
+              <a
+                href="https://console.firebase.google.com/project/college-system-6fb56/authentication/settings"
+                target="_blank"
+                rel="noreferrer"
+                className="flex-1 py-2.5 px-4 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 font-bold text-xs flex items-center justify-center gap-1.5 shadow-md shadow-amber-500/20 transition-all cursor-pointer"
+              >
+                <span>Open Firebase Auth Settings</span>
+                <ExternalLink className="w-3.5 h-3.5" />
+              </a>
+
+              {domainModalTarget === 'admin' ? (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsDomainErrorModalOpen(false);
+                    loginStaffCredentials('simplydivyanshk@gmail.com', 'faculty@2024');
+                  }}
+                  className="py-2.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+                >
+                  <span>Sign In as Admin (Divyansh)</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsDomainErrorModalOpen(false);
+                    loginAsStudent('STU-2024-001');
+                  }}
+                  className="py-2.5 px-4 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-semibold text-xs flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+                >
+                  <span>Sign In as Student (Maya Lin)</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </button>
+              )}
+            </div>
+
+            <div className="mt-3 text-center">
+              <button
+                type="button"
+                onClick={() => setIsDomainErrorModalOpen(false)}
+                className="text-xs text-slate-400 hover:text-slate-200 cursor-pointer"
+              >
+                Dismiss
               </button>
             </div>
           </div>

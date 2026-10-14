@@ -700,14 +700,15 @@ export const CollegeProvider = ({ children }) => {
       return { success: true, user, student: matched, role: 'student' };
     } catch (error) {
       console.error('Firebase Google Sign-In Error:', error);
+      const isUnauthorizedDomain = error.code === 'auth/unauthorized-domain' || (error.message && error.message.toLowerCase().includes('unauthorized domain'));
       if (error.code === 'auth/popup-closed-by-user') {
         showToast('Google Sign-In popup was closed.', 'info');
-      } else if (error.code === 'auth/unauthorized-domain') {
-        showToast('Authorized domain missing in Firebase console. Please add localhost.', 'error');
+      } else if (isUnauthorizedDomain) {
+        showToast('Firebase domain error: Please add localhost in Firebase Console.', 'error');
       } else {
         showToast(error.message || 'Google authentication failed.', 'error');
       }
-      return { success: false, error };
+      return { success: false, error, isUnauthorizedDomain };
     }
   };
 
