@@ -1215,3 +1215,186 @@ export const INITIAL_STUDY_MATERIALS = [
     category: 'Datasets',
   },
 ];
+
+export const INITIAL_STAFF = [
+  {
+    id: 'f-1',
+    name: 'Prof. James Carter',
+    email: 'faculty@unity.edu',
+    role: 'faculty',
+    title: 'Professor of Computer Science & Software Architecture',
+    department: 'Computer Science & Engineering',
+    assignedCourseIds: ['c-1', 'c-2'],
+    officeHours: 'Mon/Wed 14:00 - 16:00 (Hall B-204)'
+  },
+  {
+    id: 'f-2',
+    name: 'Prof. Dr. Evelyn Vance',
+    email: 'evelyn.vance@unity.edu',
+    role: 'faculty',
+    title: 'Department Chair & Distinguished Professor',
+    department: 'Computer Science & Engineering',
+    assignedCourseIds: ['c-1', 'c-4'],
+    officeHours: 'Tue/Thu 10:00 - 12:00 (Science Complex 401)'
+  },
+  {
+    id: 'f-3',
+    name: 'Dr. Gregory Thorne',
+    email: 'gregory.thorne@unity.edu',
+    role: 'faculty',
+    title: 'Associate Professor of Electrical Engineering',
+    department: 'Electrical & Computer Engineering',
+    assignedCourseIds: ['c-3'],
+    officeHours: 'Mon/Fri 11:00 - 13:00 (Engineering Lab 102)'
+  },
+  {
+    id: 'f-4',
+    name: 'Dr. Rachel Zimmerman',
+    email: 'rachel.zimmerman@unity.edu',
+    role: 'faculty',
+    title: 'Professor of Biomedical Informatics',
+    department: 'Biological & Biomedical Sciences',
+    assignedCourseIds: ['c-5'],
+    officeHours: 'Wed/Thu 15:00 - 17:00 (BioLab 305)'
+  },
+  {
+    id: 'f-5',
+    name: 'Prof. Arthur Pendelton',
+    email: 'arthur.pendelton@unity.edu',
+    role: 'faculty',
+    title: 'Professor & Signal Processing Laboratory Director',
+    department: 'Electrical & Computer Engineering',
+    assignedCourseIds: ['c-3'],
+    officeHours: 'Mon/Wed 10:00 - 12:00 (Maxwell Hall 202)'
+  },
+  {
+    id: 'f-6',
+    name: 'Dr. Maya Thorne',
+    email: 'maya.thorne@unity.edu',
+    role: 'faculty',
+    title: 'Associate Professor of Mathematical Statistics',
+    department: 'Mathematics & Statistics',
+    assignedCourseIds: ['c-4'],
+    officeHours: 'Tue/Thu 14:00 - 16:00 (Euler Complex 314)'
+  },
+  {
+    id: 'f-7',
+    name: 'Dr. Sarah Sterling',
+    email: 'sarah.sterling@unity.edu',
+    role: 'faculty',
+    title: 'Professor of Economics & Quantitative Finance',
+    department: 'Business Administration',
+    assignedCourseIds: ['c-6'],
+    officeHours: 'Mon/Thu 13:00 - 15:00 (Keynes Hall 108)'
+  },
+  {
+    id: 'f-8',
+    name: 'Prof. Marcus Vance',
+    email: 'marcus.vance@unity.edu',
+    role: 'faculty',
+    title: 'Department Chair & Professor of Digital Media',
+    department: 'Design & Media Arts',
+    assignedCourseIds: [],
+    officeHours: 'Wed/Fri 11:00 - 13:00 (Design Studio 4A)'
+  },
+  {
+    id: 'adm-1',
+    name: 'Eleanor Vance, Registrar',
+    email: 'registrar@unity.edu',
+    role: 'registrar',
+    title: 'Chief Academic Registrar',
+    department: 'Office of Academic Affairs & Matriculation',
+    officeHours: 'Mon-Fri 09:00 - 16:00 (Registry Wing 101)'
+  },
+  {
+    id: 'adm-2',
+    name: 'Academic Dean & Registry',
+    email: 'admin@unity.edu',
+    role: 'admin',
+    title: 'Dean of Academic Administration',
+    department: 'Deanery Registry & System Control',
+    officeHours: 'Mon-Fri 08:30 - 16:30 (Deanery Suite 200)'
+  },
+  {
+    id: 'adm-3',
+    name: 'Unity Super Administrator',
+    email: 'superadmin@unity.edu',
+    role: 'superadmin',
+    title: 'Enterprise Portal Architect & Security Admin',
+    department: 'Institutional Computing & IT Services',
+    officeHours: 'Continuous Support (IT Center)'
+  },
+  {
+    id: 'adm-divyansh',
+    name: 'Divyansh K.',
+    email: 'simplydivyanshk@gmail.com',
+    role: 'admin',
+    title: 'Faculty Administrator & Academic Dean',
+    department: 'Institutional Administration & Deanery',
+    assignedCourseIds: ['c-1', 'c-2', 'c-4'],
+    officeHours: 'Mon-Fri 09:00 - 17:00 (Admin Tower 501)'
+  },
+  {
+    id: 'adm-jnv-peren',
+    name: 'Prof. JNV Peren',
+    email: 'jnv.peren55@gmail.com',
+    role: 'admin',
+    title: 'Senior Faculty & Academic Director',
+    department: 'Institutional Administration & Academic Affairs',
+    assignedCourseIds: ['c-1', 'c-2', 'c-3', 'c-4'],
+    officeHours: 'Mon-Fri 09:00 - 17:00 (Faculty Wing 302)'
+  }
+];
+
+export const INITIAL_DEPARTMENTS = [
+  { id: 'dept-1', code: 'CSE', name: 'Computer Science & Engineering', chair: 'Prof. Dr. Evelyn Vance', facultyCount: 28, studentCount: 350, budget: '$1.8M' },
+  { id: 'dept-2', code: 'BBA', name: 'Business Administration', chair: 'Dr. Gregory Thorne', facultyCount: 22, studentCount: 275, budget: '$1.4M' },
+  { id: 'dept-3', code: 'ENG', name: 'Engineering & Technology', chair: 'Prof. Arthur Pendelton', facultyCount: 18, studentCount: 225, budget: '$1.6M' },
+  { id: 'dept-4', code: 'DES', name: 'Design & Media Arts', chair: 'Prof. Marcus Vance', facultyCount: 10, studentCount: 150, budget: '$950K' },
+  { id: 'dept-5', code: 'HUM', name: 'Humanities & Social Sciences', chair: 'Dr. Rachel Zimmerman', facultyCount: 8, studentCount: 125, budget: '$800K' },
+  { id: 'dept-6', code: 'BIO', name: 'Biological & Biomedical Sciences', chair: 'Dr. Sarah Wilson', facultyCount: 12, studentCount: 123, budget: '$1.2M' }
+];
+
+export const INITIAL_TERMS = [
+  { id: 'term-2026-fall', code: 'AY26-F', name: 'Academic Year 2026–2027', term: 'Fall Term', status: 'Active', startDate: '2026-08-25', endDate: '2026-12-18', isCurrent: true },
+  { id: 'term-2027-spring', code: 'AY27-S', name: 'Academic Year 2026–2027', term: 'Spring Term', status: 'Upcoming', startDate: '2027-01-15', endDate: '2027-05-20', isCurrent: false },
+  { id: 'term-2026-summer', code: 'AY26-SUM', name: 'Academic Year 2025–2026', term: 'Summer Term', status: 'Completed', startDate: '2026-06-01', endDate: '2026-08-10', isCurrent: false }
+];
+
+export const INITIAL_EXAMINATIONS = [
+  { id: 'exam-1', courseCode: 'CS101', title: 'Mid Term Examination', department: 'All Departments', date: '2026-10-15', time: '09:00 AM – 05:00 PM', room: 'Grand Auditorium & Hall B', maxScore: 100 },
+  { id: 'exam-2', courseCode: 'MATH201', title: 'Calculus & Linear Systems Mid Term', department: 'Engineering & Technology', date: '2026-10-19', time: '10:00 AM – 12:30 PM', room: 'Hall C-102', maxScore: 100 },
+  { id: 'exam-3', courseCode: 'ENG301', title: 'Digital Signal Processing Quiz', department: 'Electrical & Computer Engineering', date: '2026-10-24', time: '14:00 PM – 15:30 PM', room: 'Lab 305', maxScore: 50 },
+  { id: 'exam-4', courseCode: 'CS401', title: 'End Term Comprehensive Exam', department: 'Computer Science & Engineering', date: '2026-11-12', time: '09:00 AM – 12:00 PM', room: 'Main Campus Arena', maxScore: 100 }
+];
+
+export const INITIAL_ASSIGNMENTS = [
+  { id: 'asg-1', courseId: 'c-1', facultyId: 'f-1', title: 'Microservices Architecture Implementation', description: 'Design and implement a fault-tolerant distributed API service with JWT authentication.', deadline: '2026-10-28', maxPoints: 100, submissionsCount: 18, status: 'Published' },
+  { id: 'asg-2', courseId: 'c-2', facultyId: 'f-1', title: 'Database Query Optimization Benchmark', description: 'Analyze index scans versus seq scans in relational storage engines and submit written benchmarks.', deadline: '2026-11-04', maxPoints: 100, submissionsCount: 14, status: 'Published' },
+  { id: 'asg-3', courseId: 'c-3', facultyId: 'f-3', title: 'Robotics Kinematics Simulation', description: 'Simulate 6-DOF robotic arm trajectory planning using forward and inverse kinematics models.', deadline: '2026-11-10', maxPoints: 50, submissionsCount: 9, status: 'Published' }
+];
+
+export const INITIAL_ANNOUNCEMENTS = [
+  { id: 'ann-1', title: 'Fall 2026 Mid-Term Examination Schedule Released', content: 'The centralized mid-term examination timetable for all undergraduate and graduate programs has been officially published.', author: 'Prof. James Carter', authorRole: 'Administrator', targetAudience: 'all', date: '2026-10-12', priority: 'high' },
+  { id: 'ann-2', title: 'Faculty Academic Senate Meeting', content: 'All department chairs and professors are requested to attend the monthly institutional senate meeting in the Admin Boardroom.', author: 'Eleanor Vance, Registrar', authorRole: 'Registrar', targetAudience: 'faculty', date: '2026-10-10', priority: 'medium' },
+  { id: 'ann-3', title: 'Campus Career Fair & Industrial Tech Summit', content: 'Over 45 technology and research institutions will be interviewing on campus next month. Submit resumes early.', author: 'Career Development Services', authorRole: 'Services', targetAudience: 'students', date: '2026-10-08', priority: 'normal' }
+];
+
+export const INITIAL_SETTINGS = {
+  institutionName: 'Unity College of Engineering & Technology',
+  institutionCode: 'UC-1892',
+  campusAddress: '400 University Parkway, Cambridge, MA 02138',
+  registrarEmail: 'registrar@unity.edu',
+  adminContact: '+1 (555) 019-2830',
+  activeAcademicTerm: 'Fall Term 2026–2027',
+  minAttendanceRequirement: 75,
+  probationGpaThreshold: 2.0,
+  maxCreditsPerTerm: 24,
+  gradingScale: '4.0 Scale (A=4.0, B=3.0, C=2.0, D=1.0, F=0.0)',
+  authDomainRestricted: true,
+  allowedDomains: 'unity.edu, gmail.com',
+  auditLoggingEnabled: true,
+  twoFactorEnforcement: 'optional',
+  sessionTimeoutMinutes: 60
+};
+

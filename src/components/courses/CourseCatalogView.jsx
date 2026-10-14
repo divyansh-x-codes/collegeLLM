@@ -106,17 +106,17 @@ export const CourseCatalogView = () => {
       onMouseMove={() => {
         if (!isSidebarCollapsed) setIsSidebarCollapsed(true);
       }}
-      className="p-5 max-w-7xl mx-auto space-y-5"
+      className="p-5 max-w-7xl mx-auto space-y-5 text-slate-100"
     >
       {/* Top Banner / Headline */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-3 border-b border-slate-200">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-3 border-b border-slate-800">
         <div>
           <div className="flex items-center gap-2.5 flex-wrap">
-            <h1 className="text-xl font-bold text-slate-900 tracking-tight">
+            <h1 className="text-xl font-bold text-white tracking-tight">
               Academic Course Catalog
             </h1>
             {role === 'student' && currentStudent && (
-              <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-50 text-indigo-700 border border-indigo-200">
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-950/80 text-indigo-400 border border-indigo-800/60">
                 {currentStudent.avatarUrl ? (
                   <img src={currentStudent.avatarUrl} alt="" className="w-3.5 h-3.5 rounded-full object-cover" />
                 ) : (
@@ -128,7 +128,7 @@ export const CourseCatalogView = () => {
               </span>
             )}
           </div>
-          <p className="text-xs text-slate-500 mt-0.5">
+          <p className="text-xs text-slate-400 mt-0.5">
             {role === 'student' && currentStudent
               ? `Currently registered in ${courses.filter(c => c.enrolledStudentIds.includes(currentStudentId)).length} courses (${courses.filter(c => c.enrolledStudentIds.includes(currentStudentId)).reduce((sum, c) => sum + c.credits, 0)} credits) · Instant Enroll/Drop controls active`
               : 'Browse accredited courses, prerequisites, lecture schedules, and real-time seat capacities'}
@@ -141,7 +141,7 @@ export const CourseCatalogView = () => {
           {role === 'admin' && (
             <button
               onClick={handleOpenAdd}
-              className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 transition-colors shadow-xs cursor-pointer"
+              className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-white bg-indigo-600 rounded-lg hover:bg-indigo-500 transition-colors shadow-md cursor-pointer"
             >
               <Plus className="w-4 h-4" />
               <span>Add Course</span>
@@ -149,14 +149,14 @@ export const CourseCatalogView = () => {
           )}
 
           {/* View mode toggle */}
-          <div className="flex items-center bg-slate-100 p-0.5 rounded-lg">
+          <div className="flex items-center bg-[#080d1b] border border-slate-800 p-0.5 rounded-lg">
             <button
               onClick={() => setViewMode('grid')}
               aria-label="Grid view"
               className={`p-1.5 rounded-md text-xs transition-colors cursor-pointer ${
                 viewMode === 'grid'
-                  ? 'bg-white text-slate-900 shadow-xs'
-                  : 'text-slate-500 hover:text-slate-900'
+                  ? 'bg-slate-800 text-white shadow-xs'
+                  : 'text-slate-400 hover:text-white'
               }`}
             >
               <LayoutGrid className="w-3.5 h-3.5" />
@@ -166,8 +166,8 @@ export const CourseCatalogView = () => {
               aria-label="Table view"
               className={`p-1.5 rounded-md text-xs transition-colors cursor-pointer ${
                 viewMode === 'table'
-                  ? 'bg-white text-slate-900 shadow-xs'
-                  : 'text-slate-500 hover:text-slate-900'
+                  ? 'bg-slate-800 text-white shadow-xs'
+                  : 'text-slate-400 hover:text-white'
               }`}
             >
               <List className="w-3.5 h-3.5" />
@@ -177,7 +177,7 @@ export const CourseCatalogView = () => {
       </div>
 
       {/* Filter and Search Bar */}
-      <div className="bg-white p-3.5 rounded-xl border border-slate-200 space-y-2.5 shadow-xs">
+      <div className="bg-[#0c1427] p-3.5 rounded-xl border border-slate-800 space-y-2.5 shadow-xl">
         <div className="flex flex-col md:flex-row items-stretch md:items-center gap-2.5">
           {/* Search Input */}
           <div className="relative flex-1">
@@ -187,12 +187,12 @@ export const CourseCatalogView = () => {
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="Search by code (e.g. CS-301), title, instructor, or keywords..."
-              className="w-full pl-9 pr-8 py-1.5 text-xs border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-slate-50 focus:bg-white"
+              className="w-full pl-9 pr-8 py-1.5 text-xs border border-slate-700/80 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-[#080d1b] text-white placeholder-slate-500"
             />
             {searchTerm && (
               <button
                 onClick={() => setSearchTerm('')}
-                className="absolute right-2.5 top-2.5 text-slate-400 hover:text-slate-600 cursor-pointer"
+                className="absolute right-2.5 top-2.5 text-slate-400 hover:text-white cursor-pointer"
               >
                 <X className="w-3.5 h-3.5" />
               </button>
@@ -203,10 +203,10 @@ export const CourseCatalogView = () => {
           <select
             value={selectedDept}
             onChange={(e) => setSelectedDept(e.target.value)}
-            className="px-2.5 py-1.5 text-xs border border-slate-200 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 text-slate-700"
+            className="px-2.5 py-1.5 text-xs border border-slate-700/80 rounded-lg bg-[#080d1b] focus:outline-none focus:ring-2 focus:ring-indigo-500 text-slate-200"
           >
             {DEPARTMENTS.map((dept) => (
-              <option key={dept} value={dept}>
+              <option key={dept} value={dept} className="bg-[#0f172a] text-white">
                 {dept}
               </option>
             ))}
@@ -216,36 +216,36 @@ export const CourseCatalogView = () => {
           <select
             value={selectedCredits}
             onChange={(e) => setSelectedCredits(e.target.value)}
-            className="px-2.5 py-1.5 text-xs border border-slate-200 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 text-slate-700 font-mono"
+            className="px-2.5 py-1.5 text-xs border border-slate-700/80 rounded-lg bg-[#080d1b] focus:outline-none focus:ring-2 focus:ring-indigo-500 text-slate-200 font-mono"
           >
-            <option value="all">All Credits</option>
-            <option value="3">3 Credits</option>
-            <option value="4">4 Credits</option>
+            <option value="all" className="bg-[#0f172a] text-white">All Credits</option>
+            <option value="3" className="bg-[#0f172a] text-white">3 Credits</option>
+            <option value="4" className="bg-[#0f172a] text-white">4 Credits</option>
           </select>
 
           {/* Availability filter */}
           <select
             value={availabilityFilter}
             onChange={(e) => setAvailabilityFilter(e.target.value)}
-            className="px-2.5 py-1.5 text-xs border border-slate-200 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 text-slate-700"
+            className="px-2.5 py-1.5 text-xs border border-slate-700/80 rounded-lg bg-[#080d1b] focus:outline-none focus:ring-2 focus:ring-indigo-500 text-slate-200"
           >
-            <option value="all">All Availability</option>
-            <option value="open">Open Seats Only</option>
-            {role === 'student' && <option value="enrolled">My Enrolled Courses</option>}
+            <option value="all" className="bg-[#0f172a] text-white">All Availability</option>
+            <option value="open" className="bg-[#0f172a] text-white">Open Seats Only</option>
+            {role === 'student' && <option value="enrolled" className="bg-[#0f172a] text-white">My Enrolled Courses</option>}
           </select>
         </div>
 
         {/* Results count & active tags */}
-        <div className="flex items-center justify-between text-xs text-slate-500 pt-0.5">
+        <div className="flex items-center justify-between text-xs text-slate-400 pt-0.5">
           <div className="flex items-center gap-2">
             <span>
-              Showing <strong className="font-mono text-slate-900">{filteredCourses.length}</strong> of{' '}
-              <strong className="font-mono text-slate-900">{courses.length}</strong> catalog courses
+              Showing <strong className="font-mono text-white">{filteredCourses.length}</strong> of{' '}
+              <strong className="font-mono text-white">{courses.length}</strong> catalog courses
             </span>
             {selectedDept !== 'All Departments' && (
               <>
                 <span aria-hidden="true">·</span>
-                <span className="text-indigo-600">{selectedDept}</span>
+                <span className="text-indigo-400">{selectedDept}</span>
               </>
             )}
           </div>
@@ -258,7 +258,7 @@ export const CourseCatalogView = () => {
                 setSelectedCredits('all');
                 setAvailabilityFilter('all');
               }}
-              className="text-xs text-indigo-600 hover:text-indigo-800 font-medium cursor-pointer"
+              className="text-xs text-indigo-400 hover:text-indigo-300 font-medium cursor-pointer"
             >
               Reset filters
             </button>
@@ -268,8 +268,8 @@ export const CourseCatalogView = () => {
 
       {/* Roster Display Mode */}
       {filteredCourses.length === 0 ? (
-        <div className="p-12 text-center bg-white rounded-xl border border-slate-200">
-          <p className="text-xs text-slate-500">No courses matching your search query.</p>
+        <div className="p-12 text-center bg-[#0c1427] rounded-xl border border-slate-800">
+          <p className="text-xs text-slate-400">No courses matching your search query.</p>
         </div>
       ) : viewMode === 'grid' ? (
         /* GRID VIEW - Compact, clean card styling */
@@ -282,16 +282,16 @@ export const CourseCatalogView = () => {
             return (
               <div
                 key={course.id}
-                className={`bg-white rounded-xl border transition-all flex flex-col justify-between ${
+                className={`bg-[#0c1427] rounded-xl border transition-all flex flex-col justify-between ${
                   isEnrolled
-                    ? 'border-indigo-300 ring-1 ring-indigo-100 shadow-xs'
-                    : 'border-slate-200 shadow-xs hover:border-slate-300'
+                    ? 'border-indigo-500/70 ring-1 ring-indigo-500/30 shadow-lg'
+                    : 'border-slate-800 shadow-md hover:border-slate-700'
                 } ${isCompactMode ? 'p-3.5' : 'p-4'}`}
               >
                 <div>
                   <div className="flex items-start justify-between gap-2">
                     <div>
-                      <span className="font-mono font-bold text-xs text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded border border-indigo-200/80">
+                      <span className="font-mono font-bold text-xs text-indigo-300 bg-indigo-950/80 px-2 py-0.5 rounded border border-indigo-800/80">
                         {course.code}
                       </span>
                       <span className="text-xs text-slate-400 font-mono ml-2">
@@ -300,8 +300,8 @@ export const CourseCatalogView = () => {
                     </div>
 
                     {isEnrolled && (
-                      <span className="text-[10px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200 flex items-center gap-1">
-                        <CheckCircle2 className="w-3 h-3 text-emerald-600" />
+                      <span className="text-[10px] font-semibold text-emerald-300 bg-emerald-950/80 px-2 py-0.5 rounded-full border border-emerald-800/80 flex items-center gap-1">
+                        <CheckCircle2 className="w-3 h-3 text-emerald-400" />
                         <span>Enrolled</span>
                       </span>
                     )}
@@ -309,35 +309,35 @@ export const CourseCatalogView = () => {
 
                   <h3
                     onClick={() => setDetailCourse(course)}
-                    className="text-xs font-bold text-slate-900 hover:text-indigo-600 cursor-pointer mt-2 leading-snug line-clamp-2"
+                    className="text-xs font-bold text-white hover:text-indigo-400 cursor-pointer mt-2 leading-snug line-clamp-2"
                   >
                     {course.title}
                   </h3>
 
-                  <p className="text-[11px] text-slate-500 mt-1 line-clamp-2 leading-relaxed">
+                  <p className="text-[11px] text-slate-400 mt-1 line-clamp-2 leading-relaxed">
                     {course.description}
                   </p>
 
-                  <div className="mt-2.5 pt-2 border-t border-slate-100 space-y-1 text-[11px] text-slate-600">
-                    <div className="flex items-center gap-1.5 font-mono text-[10px] text-slate-700">
-                      <Clock className="w-3 h-3 text-slate-400 shrink-0" />
+                  <div className="mt-2.5 pt-2 border-t border-slate-800/80 space-y-1 text-[11px] text-slate-300">
+                    <div className="flex items-center gap-1.5 font-mono text-[10px] text-slate-300">
+                      <Clock className="w-3 h-3 text-slate-500 shrink-0" />
                       <span>{course.schedule.days.join(', ')} · {course.schedule.time}</span>
                     </div>
-                    <div className="flex items-center gap-1.5 text-slate-500 text-[10px]">
-                      <MapPin className="w-3 h-3 text-slate-400 shrink-0" />
+                    <div className="flex items-center gap-1.5 text-slate-400 text-[10px]">
+                      <MapPin className="w-3 h-3 text-slate-500 shrink-0" />
                       <span className="truncate">{course.schedule.room}</span>
                     </div>
-                    <div className="flex items-center gap-1.5 text-slate-500 text-[10px]">
-                      <Users className="w-3 h-3 text-slate-400 shrink-0" />
+                    <div className="flex items-center gap-1.5 text-slate-400 text-[10px]">
+                      <Users className="w-3 h-3 text-slate-500 shrink-0" />
                       <span className="truncate">Faculty: {course.instructor.name}</span>
                     </div>
                   </div>
                 </div>
 
-                <div className="mt-3 pt-2.5 border-t border-slate-100 flex items-center justify-between">
+                <div className="mt-3 pt-2.5 border-t border-slate-800/80 flex items-center justify-between">
                   <button
                     onClick={() => setDetailCourse(course)}
-                    className="text-[11px] font-semibold text-slate-700 hover:text-indigo-600 transition-colors cursor-pointer"
+                    className="text-[11px] font-semibold text-indigo-400 hover:text-indigo-300 transition-colors cursor-pointer"
                   >
                     View Syllabus
                   </button>
@@ -349,10 +349,10 @@ export const CourseCatalogView = () => {
                         disabled={!isEnrolled && isFull}
                         className={`flex items-center gap-1 px-2.5 py-1 text-[11px] font-semibold rounded-md transition-colors cursor-pointer ${
                           isEnrolled
-                            ? 'bg-rose-50 text-rose-700 border border-rose-200 hover:bg-rose-100'
+                            ? 'bg-rose-950/80 text-rose-300 border border-rose-800 hover:bg-rose-900/80'
                             : isFull
-                            ? 'bg-slate-200 text-slate-400 cursor-not-allowed'
-                            : 'bg-indigo-600 text-white hover:bg-indigo-700'
+                            ? 'bg-slate-800 text-slate-500 cursor-not-allowed border border-slate-700'
+                            : 'bg-indigo-600 text-white hover:bg-indigo-500'
                         }`}
                       >
                         {isEnrolled ? (
@@ -375,14 +375,14 @@ export const CourseCatalogView = () => {
                       <>
                         <button
                           onClick={() => handleOpenEdit(course)}
-                          className="p-1 text-slate-500 hover:text-slate-800 hover:bg-slate-200 rounded transition-colors cursor-pointer"
+                          className="p-1 text-slate-400 hover:text-white hover:bg-slate-800 rounded transition-colors cursor-pointer"
                           title="Edit course details"
                         >
                           <Edit3 className="w-3.5 h-3.5" />
                         </button>
                         <button
                           onClick={() => setDeleteConfirmId(course.id)}
-                          className="p-1 text-rose-500 hover:text-rose-700 hover:bg-rose-50 rounded transition-colors cursor-pointer"
+                          className="p-1 text-rose-400 hover:text-rose-300 hover:bg-rose-950/50 rounded transition-colors cursor-pointer"
                           title="Delete course"
                         >
                           <Trash2 className="w-3.5 h-3.5" />
@@ -397,10 +397,10 @@ export const CourseCatalogView = () => {
         </div>
       ) : (
         /* TABLE VIEW - Smaller, cleaner, compact table */
-        <div className="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-xs">
+        <div className="bg-[#0c1427] rounded-xl border border-slate-800 overflow-hidden shadow-xl">
           <div className="overflow-x-auto">
             <table className={`w-full text-left ${isCompactMode ? 'table-compact' : ''}`}>
-              <thead className="bg-slate-50 border-b border-slate-200 text-slate-600 font-semibold text-[11px]">
+              <thead className="bg-[#080d1b] border-b border-slate-800 text-slate-400 font-semibold text-[11px]">
                 <tr>
                   <th className="py-2.5 px-3">Code</th>
                   <th className="py-2.5 px-3">Title & Department</th>
@@ -411,21 +411,21 @@ export const CourseCatalogView = () => {
                   <th className="py-2.5 px-3 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100 text-xs">
+              <tbody className="divide-y divide-slate-800/80 text-xs text-slate-200">
                 {filteredCourses.map((course) => {
                   const isEnrolled = course.enrolledStudentIds.includes(currentStudentId);
                   const enrolledCount = course.enrolledStudentIds.length;
                   const isFull = enrolledCount >= course.capacity;
 
                   return (
-                    <tr key={course.id} className="hover:bg-slate-50/80 transition-colors">
-                      <td className="py-2 px-3 font-mono font-bold text-indigo-700">
+                    <tr key={course.id} className="hover:bg-slate-900/60 transition-colors">
+                      <td className="py-2 px-3 font-mono font-bold text-indigo-400">
                         {course.code}
                       </td>
                       <td className="py-2 px-3">
                         <div
                           onClick={() => setDetailCourse(course)}
-                          className="font-semibold text-slate-900 hover:text-indigo-600 cursor-pointer"
+                          className="font-semibold text-white hover:text-indigo-400 cursor-pointer"
                         >
                           {course.title}
                         </div>
@@ -433,18 +433,18 @@ export const CourseCatalogView = () => {
                           {course.department}
                         </div>
                       </td>
-                      <td className="py-2 px-3 font-mono text-slate-700">
+                      <td className="py-2 px-3 font-mono text-slate-300">
                         {course.credits} Cr
                       </td>
-                      <td className="py-2 px-3 text-slate-700">
+                      <td className="py-2 px-3 text-slate-300">
                         {course.instructor.name}
                       </td>
-                      <td className="py-2 px-3 text-[11px] text-slate-600 font-mono">
+                      <td className="py-2 px-3 text-[11px] text-slate-300 font-mono">
                         <div>{course.schedule.days.join(', ')}</div>
                         <div className="text-[10px] text-slate-400">{course.schedule.time}</div>
                       </td>
-                      <td className="py-2 px-3 font-mono text-slate-700">
-                        <span className={isFull ? 'text-rose-600 font-bold' : ''}>
+                      <td className="py-2 px-3 font-mono text-slate-300">
+                        <span className={isFull ? 'text-rose-400 font-bold' : ''}>
                           {enrolledCount}
                         </span>
                         /{course.capacity}
@@ -453,7 +453,7 @@ export const CourseCatalogView = () => {
                         <div className="flex items-center justify-end gap-1.5">
                           <button
                             onClick={() => setDetailCourse(course)}
-                            className="px-2 py-0.5 text-slate-600 hover:text-slate-900 border border-slate-200 rounded font-medium text-[11px] cursor-pointer"
+                            className="px-2 py-0.5 text-slate-300 hover:text-white border border-slate-700 bg-slate-800/80 rounded font-medium text-[11px] cursor-pointer"
                           >
                             Details
                           </button>
@@ -464,10 +464,10 @@ export const CourseCatalogView = () => {
                               disabled={!isEnrolled && isFull}
                               className={`px-2 py-0.5 text-[11px] font-semibold rounded transition-colors cursor-pointer ${
                                 isEnrolled
-                                  ? 'bg-rose-50 text-rose-700 border border-rose-200 hover:bg-rose-100'
+                                  ? 'bg-rose-950/80 text-rose-300 border border-rose-800 hover:bg-rose-900/80'
                                   : isFull
-                                  ? 'bg-slate-200 text-slate-400 cursor-not-allowed'
-                                  : 'bg-indigo-600 text-white hover:bg-indigo-700'
+                                  ? 'bg-slate-800 text-slate-500 cursor-not-allowed border border-slate-700'
+                                  : 'bg-indigo-600 text-white hover:bg-indigo-500'
                               }`}
                             >
                               {isEnrolled ? 'Drop' : isFull ? 'Full' : 'Enroll'}
@@ -478,14 +478,14 @@ export const CourseCatalogView = () => {
                             <>
                               <button
                                 onClick={() => handleOpenEdit(course)}
-                                className="p-1 text-slate-500 hover:text-slate-800 hover:bg-slate-100 rounded cursor-pointer"
+                                className="p-1 text-slate-400 hover:text-white hover:bg-slate-800 rounded cursor-pointer"
                                 title="Edit"
                               >
                                 <Edit3 className="w-3.5 h-3.5" />
                               </button>
                               <button
                                 onClick={() => setDeleteConfirmId(course.id)}
-                                className="p-1 text-rose-500 hover:text-rose-700 hover:bg-rose-50 rounded cursor-pointer"
+                                className="p-1 text-rose-400 hover:text-rose-300 hover:bg-rose-950/50 rounded cursor-pointer"
                                 title="Delete"
                               >
                                 <Trash2 className="w-3.5 h-3.5" />
@@ -505,22 +505,22 @@ export const CourseCatalogView = () => {
 
       {/* Delete Confirmation Dialog */}
       {deleteConfirmId && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-xs">
-          <div className="w-full max-w-md bg-white rounded-xl shadow-xl border border-slate-200 p-5 space-y-3.5">
-            <h3 className="text-sm font-bold text-slate-900">Confirm Course Removal</h3>
-            <p className="text-xs text-slate-600 leading-relaxed">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-md">
+          <div className="w-full max-w-md bg-[#0f172a] rounded-2xl shadow-2xl border border-slate-700/80 p-5 space-y-3.5 text-slate-100">
+            <h3 className="text-sm font-bold text-white">Confirm Course Removal</h3>
+            <p className="text-xs text-slate-300 leading-relaxed">
               Are you sure you want to permanently delete this course? Enrolled students will be automatically unenrolled and associated grading records will be cleared.
             </p>
             <div className="flex items-center justify-end gap-2 pt-2">
               <button
                 onClick={() => setDeleteConfirmId(null)}
-                className="px-3 py-1.5 text-xs font-medium text-slate-700 bg-slate-100 rounded-lg hover:bg-slate-200 cursor-pointer"
+                className="px-3 py-1.5 text-xs font-medium text-slate-300 bg-slate-800 border border-slate-700 rounded-lg hover:bg-slate-700 cursor-pointer"
               >
                 Cancel
               </button>
               <button
                 onClick={() => handleConfirmDelete(deleteConfirmId)}
-                className="px-3 py-1.5 text-xs font-semibold text-white bg-rose-600 rounded-lg hover:bg-rose-700 cursor-pointer"
+                className="px-3 py-1.5 text-xs font-semibold text-white bg-rose-600 rounded-lg hover:bg-rose-500 cursor-pointer shadow-md"
               >
                 Delete Course
               </button>

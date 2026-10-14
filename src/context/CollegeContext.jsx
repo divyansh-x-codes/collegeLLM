@@ -10,7 +10,22 @@ import {
   INITIAL_NOTIFICATIONS,
   INITIAL_STUDENT_CLUBS,
   INITIAL_STUDY_MATERIALS,
+  INITIAL_STAFF,
+  INITIAL_DEPARTMENTS,
+  INITIAL_TERMS,
+  INITIAL_EXAMINATIONS,
+  INITIAL_ASSIGNMENTS,
+  INITIAL_ANNOUNCEMENTS,
+  INITIAL_SETTINGS,
 } from '../data/mockData.js';
+import { 
+  auth, 
+  googleProvider, 
+  signInWithPopup, 
+  signOut, 
+  onAuthStateChanged 
+} from '../services/firebase.js';
+import { apiClient } from '../services/apiClient.js';
 
 export function calculateGrade(weightedScore) {
   if (weightedScore >= 97) return { letterGrade: 'A+', gpaPoint: 4.0 };
@@ -37,12 +52,65 @@ export const CollegeProvider = ({ children }) => {
 
   const [isAuthenticated, setIsAuthenticated] = useState(() => {
     const saved = localStorage.getItem('unity_auth');
-    return saved !== null ? saved === 'true' : true;
+    return saved === 'true';
   });
 
   const [currentStudentId, setCurrentStudentId] = useState(() => {
     return localStorage.getItem('unity_student_id') || 's-1';
   });
+
+  const [firebaseUser, setFirebaseUser] = useState(null);
+
+  const [staff, setStaff] = useState(() => {
+    const saved = localStorage.getItem('unity_staff');
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed)) {
+          const hasDivyansh = parsed.some(s => s.email?.toLowerCase() === 'simplydivyanshk@gmail.com');
+          if (!hasDivyansh) {
+            const divyansh = INITIAL_STAFF.find(s => s.email?.toLowerCase() === 'simplydivyanshk@gmail.com');
+            if (divyansh) parsed.push(divyansh);
+          }
+          const hasJnv = parsed.some(s => s.email?.toLowerCase() === 'jnv.peren55@gmail.com');
+          if (!hasJnv) {
+            const jnv = INITIAL_STAFF.find(s => s.email?.toLowerCase() === 'jnv.peren55@gmail.com');
+            if (jnv) parsed.push(jnv);
+          }
+          return parsed;
+        }
+      } catch (e) {}
+    }
+    return INITIAL_STAFF;
+  });
+
+  const [currentStaffUser, setCurrentStaffUser] = useState(() => {
+    const saved = localStorage.getItem('unity_staff_user');
+    if (saved) {
+      try { return JSON.parse(saved); } catch (e) {}
+    }
+    return null;
+  });
+
+  // Sync Firebase Auth state
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setFirebaseUser(user);
+    });
+    return () => unsubscribe();
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('unity_staff', JSON.stringify(staff));
+  }, [staff]);
+
+  useEffect(() => {
+    if (currentStaffUser) {
+      localStorage.setItem('unity_staff_user', JSON.stringify(currentStaffUser));
+    } else {
+      localStorage.removeItem('unity_staff_user');
+    }
+  }, [currentStaffUser]);
 
   const [activeTab, setActiveTab] = useState('dashboard');
 
@@ -103,6 +171,7 @@ export const CollegeProvider = ({ children }) => {
   const [selectedCourseId, setSelectedCourseId] = useState('c-1');
   const [toasts, setToasts] = useState([]);
   const [isStudentPhotoModalOpen, setIsStudentPhotoModalOpen] = useState(false);
+  const [isFacultyAuthGateOpen, setIsFacultyAuthGateOpen] = useState(false);
 
   // Dedicated Subject-Wise Attendance state
   const [subjectAttendance, setSubjectAttendance] = useState(() => {
@@ -138,7 +207,101 @@ export const CollegeProvider = ({ children }) => {
     return INITIAL_STUDENT_CLUBS;
   });
 
-  const [studyMaterials] = useState(INITIAL_STUDY_MATERIALS);
+  const [studyMaterials, setStudyMaterials] = useState(() => {
+    const saved = localStorage.getItem('unity_study_materials');
+    if (saved) {
+      try { return JSON.parse(saved); } catch (e) {}
+    }
+    return INITIAL_STUDY_MATERIALS;
+  });
+
+  // Administrative Collections
+  const [departments, setDepartments] = useState(() => {
+    const saved = localStorage.getItem('unity_departments');
+    if (saved) {
+      try { return JSON.parse(saved); } catch (e) {}
+    }
+    return INITIAL_DEPARTMENTS;
+  });
+
+  const [academicTerms, setAcademicTerms] = useState(() => {
+    const saved = localStorage.getItem('unity_academic_terms');
+    if (saved) {
+      try { return JSON.parse(saved); } catch (e) {}
+    }
+    return INITIAL_TERMS;
+  });
+
+  const [examinations, setExaminations] = useState(() => {
+    const saved = localStorage.getItem('unity_examinations');
+    if (saved) {
+      try { return JSON.parse(saved); } catch (e) {}
+    }
+    return INITIAL_EXAMINATIONS;
+  });
+
+  const [assignments, setAssignments] = useState(() => {
+    const saved = localStorage.getItem('unity_assignments');
+    if (saved) {
+      try { return JSON.parse(saved); } catch (e) {}
+    }
+    return INITIAL_ASSIGNMENTS;
+  });
+
+  const [announcements, setAnnouncements] = useState(() => {
+    const saved = localStorage.getItem('unity_announcements');
+    if (saved) {
+      try { return JSON.parse(saved); } catch (e) {}
+    }
+    return INITIAL_ANNOUNCEMENTS;
+  });
+
+  const [systemSettings, setSystemSettings] = useState(() => {
+    const saved = localStorage.getItem('unity_settings');
+    if (saved) {
+      try { return JSON.parse(saved); } catch (e) {}
+    }
+    return INITIAL_SETTINGS;
+  });
+
+  const [auditLogs, setAuditLogs] = useState(() => {
+    const saved = localStorage.getItem('unity_audit_logs');
+    if (saved) {
+      try { return JSON.parse(saved); } catch (e) {}
+    }
+    return [
+      { id: 'aud-1', timestamp: new Date(Date.now() - 3600000).toISOString(), actor: 'System Bootstrap', action: 'SYSTEM_INITIALIZED', details: 'All institutional modules online', status: 'Success' },
+      { id: 'aud-2', timestamp: new Date(Date.now() - 1800000).toISOString(), actor: 'Divyansh K. (Administrator)', action: 'PORTAL_ACCESS', details: 'Authenticated to Institutional Administration & Deanery', status: 'Success' }
+    ];
+  });
+
+  useEffect(() => {
+    localStorage.setItem('unity_departments', JSON.stringify(departments));
+  }, [departments]);
+
+  useEffect(() => {
+    localStorage.setItem('unity_academic_terms', JSON.stringify(academicTerms));
+  }, [academicTerms]);
+
+  useEffect(() => {
+    localStorage.setItem('unity_examinations', JSON.stringify(examinations));
+  }, [examinations]);
+
+  useEffect(() => {
+    localStorage.setItem('unity_assignments', JSON.stringify(assignments));
+  }, [assignments]);
+
+  useEffect(() => {
+    localStorage.setItem('unity_announcements', JSON.stringify(announcements));
+  }, [announcements]);
+
+  useEffect(() => {
+    localStorage.setItem('unity_settings', JSON.stringify(systemSettings));
+  }, [systemSettings]);
+
+  useEffect(() => {
+    localStorage.setItem('unity_audit_logs', JSON.stringify(auditLogs));
+  }, [auditLogs]);
 
   useEffect(() => {
     localStorage.setItem('unity_subject_attendance', JSON.stringify(subjectAttendance));
@@ -155,6 +318,10 @@ export const CollegeProvider = ({ children }) => {
   useEffect(() => {
     localStorage.setItem('unity_clubs', JSON.stringify(studentClubs));
   }, [studentClubs]);
+
+  useEffect(() => {
+    localStorage.setItem('unity_study_materials', JSON.stringify(studyMaterials));
+  }, [studyMaterials]);
 
   // Current logged in student
   const currentStudent = students.find((s) => s.id === currentStudentId) || (students.length > 0 ? students[0] : undefined);
@@ -198,6 +365,107 @@ export const CollegeProvider = ({ children }) => {
     localStorage.setItem('unity_live_session', JSON.stringify(liveSession));
   }, [liveSession]);
 
+  useEffect(() => {
+    try {
+      localStorage.setItem('unity_announcements', JSON.stringify(announcements));
+    } catch (e) {}
+  }, [announcements]);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('unity_examinations', JSON.stringify(examinations));
+    } catch (e) {}
+  }, [examinations]);
+
+  // Live synchronization revision tracker
+  const [syncVersion, setSyncVersion] = useState(0);
+
+  // Poll backend sync version every 3 seconds for cross-portal synchronization
+  useEffect(() => {
+    let isMounted = true;
+    const checkSync = async () => {
+      try {
+        const res = await fetch('/api/sync/version');
+        if (res.ok) {
+          const data = await res.json();
+          if (data.success && data.version !== syncVersion) {
+            setSyncVersion(data.version);
+            // Re-fetch authoritative collections from backend
+            fetchServerCollections();
+          }
+        }
+      } catch (e) {
+        // Fallback to local cache if backend is resting
+      }
+    };
+
+    const fetchServerCollections = async () => {
+      try {
+        const [resStudents, resCourses, resStaff, resDepts, resTerms, resExams, resAnn, resAsg, resSettings, resAudit] = await Promise.all([
+          fetch('/api/students'),
+          fetch('/api/courses'),
+          fetch('/api/staff'),
+          fetch('/api/admin/departments'),
+          fetch('/api/admin/academic-terms'),
+          fetch('/api/examinations'),
+          fetch('/api/announcements'),
+          fetch('/api/assignments'),
+          fetch('/api/settings'),
+          fetch('/api/audit-logs')
+        ]);
+        if (resStudents.ok) {
+          const sJson = await resStudents.json();
+          if (Array.isArray(sJson)) setStudents(sJson);
+        }
+        if (resCourses.ok) {
+          const cJson = await resCourses.json();
+          if (Array.isArray(cJson)) setCourses(cJson);
+        }
+        if (resStaff.ok) {
+          const stJson = await resStaff.json();
+          if (Array.isArray(stJson)) setStaff(stJson);
+        }
+        if (resDepts.ok) {
+          const dJson = await resDepts.json();
+          if (dJson.departments) setDepartments(dJson.departments);
+        }
+        if (resTerms.ok) {
+          const tJson = await resTerms.json();
+          if (tJson.terms) setAcademicTerms(tJson.terms);
+        }
+        if (resExams.ok) {
+          const eJson = await resExams.json();
+          if (eJson.examinations) setExaminations(eJson.examinations);
+        }
+        if (resAnn.ok) {
+          const aJson = await resAnn.json();
+          if (aJson.announcements) setAnnouncements(aJson.announcements);
+        }
+        if (resAsg.ok) {
+          const asgJson = await resAsg.json();
+          if (asgJson.assignments) setAssignments(asgJson.assignments);
+        }
+        if (resSettings.ok) {
+          const setJson = await resSettings.json();
+          if (setJson.settings) setSystemSettings(setJson.settings);
+        }
+        if (resAudit.ok) {
+          const audJson = await resAudit.json();
+          if (audJson.auditLogs) setAuditLogs(audJson.auditLogs);
+        }
+      } catch (err) {
+        console.warn('Sync re-fetch notice:', err);
+      }
+    };
+
+    checkSync();
+    const interval = setInterval(checkSync, 3000);
+    return () => {
+      isMounted = false;
+      clearInterval(interval);
+    };
+  }, [syncVersion]);
+
   const showToast = (message, type = 'info') => {
     const id = `${Date.now()}-${Math.random()}`;
     setToasts((prev) => [...prev, { id, message, type }]);
@@ -216,6 +484,16 @@ export const CollegeProvider = ({ children }) => {
     if (!clean) {
       showToast('Please enter your Student ID or university email.', 'error');
       return false;
+    }
+
+    if (clean === 'simplydivyanshk@gmail.com') {
+      showToast('Faculty Administrator credentials detected. Routing to Admin Portal...', 'info');
+      return loginStaffCredentials('simplydivyanshk@gmail.com', 'faculty@2024');
+    }
+
+    if (clean === 'jnv.peren55@gmail.com') {
+      showToast('Senior Faculty & Academic Director credentials detected. Routing to Faculty Portal...', 'info');
+      return loginStaffCredentials('jnv.peren55@gmail.com', 'faculty@2024');
     }
 
     const found = students.find((s) => 
@@ -244,14 +522,202 @@ export const CollegeProvider = ({ children }) => {
     return false;
   };
 
-  const loginAsFaculty = (targetRole) => {
+  const loginAsFaculty = (targetRole, facultyMember = null) => {
+    const assignedUser = facultyMember || staff.find(s => s.role === targetRole) || staff[0];
+    setCurrentStaffUser(assignedUser);
     setRole(targetRole);
     setIsAuthenticated(true);
     setActiveTab('dashboard');
-    showToast(`Signed in as ${targetRole === 'admin' ? 'Academic Registrar (Admin)' : 'Faculty Professor'}.`, 'success');
+    showToast(`Signed in as ${assignedUser.name} (${assignedUser.title}).`, 'success');
   };
 
-  const logout = () => {
+  const loginStaffCredentials = (email, password) => {
+    const clean = email.toLowerCase().trim();
+    if (!clean) {
+      showToast('Please enter your institutional faculty email.', 'error');
+      return false;
+    }
+
+    if (password && (clean === 'simplydivyanshk@gmail.com' || clean === 'jnv.peren55@gmail.com')) {
+      const allowed = ['faculty@2024', 'admin123', 'admin', 'divyansh@2024', 'peren@2024', 'jnv@2024'];
+      if (!allowed.includes(password)) {
+        showToast('Invalid faculty password. Please verify your credentials.', 'error');
+        return false;
+      }
+    }
+
+    let matchedStaff = staff.find(s => s.email.toLowerCase() === clean);
+    if (!matchedStaff && clean === 'simplydivyanshk@gmail.com') {
+      matchedStaff = {
+        id: 'adm-divyansh',
+        name: 'Divyansh K.',
+        email: 'simplydivyanshk@gmail.com',
+        role: 'admin',
+        title: 'Faculty Administrator & Academic Dean',
+        department: 'Institutional Administration & Deanery',
+        assignedCourseIds: ['c-1', 'c-2', 'c-4'],
+        officeHours: 'Mon-Fri 09:00 - 17:00 (Admin Tower 501)'
+      };
+      setStaff(prev => [...prev, matchedStaff]);
+    }
+    if (!matchedStaff && clean === 'jnv.peren55@gmail.com') {
+      matchedStaff = {
+        id: 'adm-jnv-peren',
+        name: 'Prof. JNV Peren',
+        email: 'jnv.peren55@gmail.com',
+        role: 'admin',
+        title: 'Senior Faculty & Academic Director',
+        department: 'Institutional Administration & Academic Affairs',
+        assignedCourseIds: ['c-1', 'c-2', 'c-3', 'c-4'],
+        officeHours: 'Mon-Fri 09:00 - 17:00 (Faculty Wing 302)'
+      };
+      setStaff(prev => [...prev, matchedStaff]);
+    }
+
+    if (!matchedStaff) {
+      showToast(`Access Denied: "${email}" is not found in the approved faculty & admin roster.`, 'error');
+      return false;
+    }
+
+    setCurrentStaffUser(matchedStaff);
+    setRole(matchedStaff.role || 'admin');
+    setIsAuthenticated(true);
+    setIsFacultyAuthGateOpen(false);
+    setActiveTab('dashboard');
+    showToast(`Welcome back, ${matchedStaff.name}! Authenticated to Admin & Faculty Portal.`, 'success');
+    return true;
+  };
+
+  const requestSwitchToFaculty = () => {
+    if (role === 'admin' || role === 'faculty' || role === 'professor') {
+      setRole('faculty');
+      setActiveTab('dashboard');
+      showToast('Switched to Faculty Portal view.', 'info');
+    } else {
+      setIsFacultyAuthGateOpen(true);
+    }
+  };
+
+  const loginWithGoogle = async ({ targetPortal = 'student' } = {}) => {
+    try {
+      const result = await signInWithPopup(auth, googleProvider);
+      const user = result.user;
+      setFirebaseUser(user);
+
+      const email = (user.email || '').toLowerCase().trim();
+      const displayName = user.displayName || 'College User';
+
+      // Portal-specific authorization guard
+      const isMasterAdmin = email === 'simplydivyanshk@gmail.com' || email === 'jnv.peren55@gmail.com';
+      if (targetPortal === 'admin' || isMasterAdmin) {
+        let staffMatch = staff.find(s => s.email.toLowerCase() === email);
+        if (!staffMatch && email === 'simplydivyanshk@gmail.com') {
+          staffMatch = {
+            id: 'adm-divyansh',
+            name: displayName && displayName !== 'College User' ? displayName : 'Divyansh K.',
+            email: 'simplydivyanshk@gmail.com',
+            role: 'admin',
+            title: 'Faculty Administrator & Academic Dean',
+            department: 'Institutional Administration & Deanery',
+            assignedCourseIds: ['c-1', 'c-2', 'c-4'],
+            officeHours: 'Mon-Fri 09:00 - 17:00 (Admin Tower 501)'
+          };
+          setStaff(prev => [...prev, staffMatch]);
+        }
+        if (!staffMatch && email === 'jnv.peren55@gmail.com') {
+          staffMatch = {
+            id: 'adm-jnv-peren',
+            name: displayName && displayName !== 'College User' ? displayName : 'Prof. JNV Peren',
+            email: 'jnv.peren55@gmail.com',
+            role: 'admin',
+            title: 'Senior Faculty & Academic Director',
+            department: 'Institutional Administration & Academic Affairs',
+            assignedCourseIds: ['c-1', 'c-2', 'c-3', 'c-4'],
+            officeHours: 'Mon-Fri 09:00 - 17:00 (Faculty Wing 302)'
+          };
+          setStaff(prev => [...prev, staffMatch]);
+        }
+
+        if (!staffMatch) {
+          showToast(`Access Denied: Google account "${user.email}" is not registered as an authorized faculty member or administrator. Please use the Student Portal.`, 'error');
+          return { success: false, unauthorized: true, message: 'Unauthorized staff account.' };
+        }
+
+        setCurrentStaffUser(staffMatch);
+        setRole(staffMatch.role || 'admin');
+        setIsAuthenticated(true);
+        setIsFacultyAuthGateOpen(false);
+        setActiveTab('dashboard');
+        showToast(`Welcome, ${staffMatch.name}! Authenticated as Administrator.`, 'success');
+        return { success: true, user: staffMatch, role: staffMatch.role };
+      }
+
+      // Student Portal Google Login
+      const nameParts = displayName.trim().split(' ');
+      const firstName = nameParts[0] || 'Student';
+      const lastName = nameParts.slice(1).join(' ') || 'User';
+
+      let matched = students.find((s) => s.email?.toLowerCase() === email);
+
+      if (!matched) {
+        // Auto-enroll new student account from Google Auth
+        const generatedId = `STU-${new Date().getFullYear()}-${Math.floor(100 + Math.random() * 900)}`;
+        matched = {
+          id: `s-google-${user.uid.slice(0, 8)}`,
+          studentId: generatedId,
+          firstName: firstName,
+          lastName: lastName,
+          email: email,
+          phone: user.phoneNumber || '+1 (555) 234-8901',
+          department: 'Computer Science & Engineering',
+          program: 'B.Sc. Computer Science',
+          year: 'Junior',
+          cohort: `Class of ${new Date().getFullYear() + 2}`,
+          enrollmentDate: new Date().toISOString().split('T')[0],
+          status: 'Active',
+          gpa: 3.88,
+          attendanceRate: 95.0,
+          advisor: 'Prof. James Carter',
+          avatarUrl: user.photoURL || undefined,
+          avatarBg: 'from-blue-600 to-indigo-700',
+          enrolledCourseIds: ['c-1', 'c-2', 'c-4'],
+          emergencyContact: {
+            name: 'Primary Contact',
+            relationship: 'Guardian',
+            phone: '+1 (555) 778-9901',
+          },
+        };
+        setStudents((prev) => [matched, ...prev]);
+      } else if (user.photoURL && !matched.avatarUrl) {
+        matched.avatarUrl = user.photoURL;
+      }
+
+      setCurrentStudentId(matched.id);
+      setRole('student');
+      setIsAuthenticated(true);
+      setActiveTab('dashboard');
+      showToast(`Welcome back, ${displayName}! Verified via Google Single Sign-On.`, 'success');
+      return { success: true, user, student: matched, role: 'student' };
+    } catch (error) {
+      console.error('Firebase Google Sign-In Error:', error);
+      if (error.code === 'auth/popup-closed-by-user') {
+        showToast('Google Sign-In popup was closed.', 'info');
+      } else if (error.code === 'auth/unauthorized-domain') {
+        showToast('Authorized domain missing in Firebase console. Please add localhost.', 'error');
+      } else {
+        showToast(error.message || 'Google authentication failed.', 'error');
+      }
+      return { success: false, error };
+    }
+  };
+
+  const logout = async () => {
+    try {
+      await signOut(auth);
+    } catch (e) {
+      console.warn('Firebase signOut notice:', e);
+    }
+    setFirebaseUser(null);
     setIsAuthenticated(false);
     showToast('Signed out of Unity College Portal.', 'info');
   };
@@ -300,7 +766,7 @@ export const CollegeProvider = ({ children }) => {
   };
 
   // COURSE CATALOG CRUD
-  const addCourse = (courseData) => {
+  const addCourse = async (courseData) => {
     const newId = `c-${Date.now()}`;
     const newCourse = {
       ...courseData,
@@ -315,6 +781,17 @@ export const CollegeProvider = ({ children }) => {
     };
 
     setCourses((prev) => [newCourse, ...prev]);
+
+    try {
+      await fetch('/api/admin/quick-actions/create-course', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newCourse)
+      });
+    } catch (err) {
+      console.warn('Backend course creation sync:', err);
+    }
+
     showToast(`Course "${newCourse.code}: ${newCourse.title}" successfully created.`, 'success');
     return newCourse;
   };
@@ -405,7 +882,7 @@ export const CollegeProvider = ({ children }) => {
   };
 
   // STUDENT REGISTRATION
-  const registerStudent = (data) => {
+  const registerStudent = async (data) => {
     const currentYear = new Date().getFullYear();
     const count = students.length + 1;
     const studentId = `STU-${currentYear}-${String(count).padStart(3, '0')}`;
@@ -424,9 +901,22 @@ export const CollegeProvider = ({ children }) => {
       id: `s-${Date.now()}`,
       studentId,
       avatarBg,
+      status: data.status || 'Active',
+      gpa: 3.80,
+      attendanceRate: 100.0,
     };
 
     setStudents((prev) => [newStudent, ...prev]);
+
+    try {
+      await fetch('/api/admin/quick-actions/add-student', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newStudent),
+      });
+    } catch (err) {
+      console.warn('Backend student registration sync:', err);
+    }
 
     if (newStudent.enrolledCourseIds && newStudent.enrolledCourseIds.length > 0) {
       setCourses((prev) =>
@@ -648,6 +1138,313 @@ export const CollegeProvider = ({ children }) => {
     );
   };
 
+  // ADMINISTRATIVE ACTION METHODS
+  const addDepartment = async (deptData) => {
+    try {
+      const res = await fetch('/api/admin/departments', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(deptData)
+      });
+      const data = await res.json();
+      if (data.success && data.department) {
+        setDepartments(prev => [...prev, data.department]);
+        showToast(`Department "${data.department.name}" (${data.department.code}) created successfully.`, 'success');
+        return data.department;
+      }
+    } catch (e) {
+      console.warn('Backend department create error:', e);
+    }
+    const localDept = { id: `dept-${Date.now()}`, ...deptData };
+    setDepartments(prev => [...prev, localDept]);
+    showToast(`Department "${localDept.name}" created.`, 'success');
+    return localDept;
+  };
+
+  const updateDepartment = async (id, updates) => {
+    setDepartments(prev => prev.map(d => d.id === id ? { ...d, ...updates } : d));
+    try {
+      await fetch(`/api/admin/departments/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(updates)
+      });
+    } catch (e) {}
+    showToast('Department records updated.', 'success');
+  };
+
+  const deleteDepartment = async (id) => {
+    const dept = departments.find(d => d.id === id);
+    setDepartments(prev => prev.filter(d => d.id !== id));
+    try {
+      await fetch(`/api/admin/departments/${id}`, { method: 'DELETE' });
+    } catch (e) {}
+    showToast(`Department ${dept?.code || ''} archived.`, 'info');
+  };
+
+  const addAcademicTerm = async (termData) => {
+    try {
+      const res = await fetch('/api/admin/academic-terms', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(termData)
+      });
+      const data = await res.json();
+      if (data.success && data.term) {
+        setAcademicTerms(prev => [...prev, data.term]);
+        showToast(`Academic Term "${data.term.name}" registered.`, 'success');
+        return data.term;
+      }
+    } catch (e) {}
+    const localTerm = { id: `term-${Date.now()}`, ...termData };
+    setAcademicTerms(prev => [...prev, localTerm]);
+    showToast(`Academic Term registered.`, 'success');
+    return localTerm;
+  };
+
+  const setActiveAcademicTerm = async (id) => {
+    setAcademicTerms(prev => prev.map(t => ({
+      ...t,
+      isCurrent: t.id === id,
+      status: t.id === id ? 'Active' : (t.status === 'Active' ? 'Completed' : t.status)
+    })));
+    try {
+      await fetch(`/api/admin/academic-terms/${id}/activate`, { method: 'PUT' });
+    } catch (e) {}
+    showToast('Authoritative active term updated across all portals.', 'success');
+  };
+
+  const scheduleExamination = async (examData) => {
+    try {
+      const res = await fetch('/api/examinations', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(examData)
+      });
+      const data = await res.json();
+      if (data.success && data.examination) {
+        setExaminations(prev => [...prev, data.examination]);
+        showToast(`Examination "${data.examination.title}" scheduled.`, 'success');
+        return data.examination;
+      }
+    } catch (e) {}
+    const localExam = { id: `exam-${Date.now()}`, ...examData };
+    setExaminations(prev => [...prev, localExam]);
+    showToast('Examination scheduled.', 'success');
+    return localExam;
+  };
+
+  const cancelExamination = async (id) => {
+    const exam = examinations.find(e => e.id === id);
+    setExaminations(prev => prev.filter(e => e.id !== id));
+    try {
+      await fetch(`/api/examinations/${id}`, { method: 'DELETE' });
+    } catch (e) {}
+    showToast(`Examination ${exam?.title || ''} cancelled.`, 'info');
+  };
+
+  const createAssignment = async (asgData) => {
+    try {
+      const res = await fetch('/api/assignments', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(asgData)
+      });
+      const data = await res.json();
+      if (data.success && data.assignment) {
+        setAssignments(prev => [...prev, data.assignment]);
+        showToast(`Assignment "${data.assignment.title}" published.`, 'success');
+        return data.assignment;
+      }
+    } catch (e) {}
+    const localAsg = { id: `asg-${Date.now()}`, ...asgData, submissionsCount: 0, status: 'Published' };
+    setAssignments(prev => [...prev, localAsg]);
+    showToast(`Assignment published.`, 'success');
+    return localAsg;
+  };
+
+  const updateAssignment = async (id, updates) => {
+    setAssignments(prev => prev.map(a => a.id === id ? { ...a, ...updates } : a));
+    try {
+      await fetch(`/api/assignments/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(updates)
+      });
+    } catch (e) {}
+    showToast('Assignment details updated.', 'success');
+  };
+
+  const submitAssignment = async (asgId, submission) => {
+    setAssignments(prev => prev.map(a => {
+      if (a.id === asgId) {
+        return {
+          ...a,
+          status: 'Submitted',
+          submittedFile: submission.file,
+          submittedAt: new Date().toISOString(),
+          submissionNotes: submission.notes || '',
+          submissionsCount: (a.submissionsCount || 0) + 1
+        };
+      }
+      return a;
+    }));
+    try {
+      await fetch(`/api/assignments/${asgId}/submit`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(submission)
+      });
+    } catch (e) {}
+    showToast('Assignment submitted successfully! Receipt generated.', 'success');
+  };
+
+  const addStudyMaterial = async (materialData) => {
+    const newMaterial = {
+      id: `mat-${Date.now()}`,
+      uploadDate: new Date().toISOString().split('T')[0],
+      downloads: 0,
+      ...materialData
+    };
+    setStudyMaterials(prev => [newMaterial, ...prev]);
+    try {
+      await fetch('/api/materials', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newMaterial)
+      });
+    } catch (e) {}
+    showToast(`Study material "${newMaterial.title}" released to students!`, 'success');
+    return newMaterial;
+  };
+
+  const deleteStudyMaterial = async (id) => {
+    setStudyMaterials(prev => prev.filter(m => m.id !== id));
+    try {
+      await fetch(`/api/materials/${id}`, { method: 'DELETE' });
+    } catch (e) {}
+    showToast('Material removed from repository.', 'info');
+  };
+
+  const postAnnouncement = async (annData) => {
+    try {
+      const res = await fetch('/api/announcements', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(annData)
+      });
+      const data = await res.json();
+      if (data.success && data.announcement) {
+        setAnnouncements(prev => [data.announcement, ...prev]);
+        showToast(`Announcement "${data.announcement.title}" broadcasted.`, 'success');
+        return data.announcement;
+      }
+    } catch (e) {}
+    const localAnn = { id: `ann-${Date.now()}`, date: new Date().toISOString().split('T')[0], ...annData };
+    setAnnouncements(prev => [localAnn, ...prev]);
+    showToast('Announcement posted.', 'success');
+    return localAnn;
+  };
+
+  const deleteAnnouncement = async (id) => {
+    setAnnouncements(prev => prev.filter(a => a.id !== id));
+    try {
+      await fetch(`/api/announcements/${id}`, { method: 'DELETE' });
+    } catch (e) {}
+    showToast('Announcement removed.', 'info');
+  };
+
+  const addFaculty = async (facultyData) => {
+    try {
+      const res = await fetch('/api/staff', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(facultyData)
+      });
+      const data = await res.json();
+      if (data.success && data.staff) {
+        setStaff(prev => [...prev, data.staff]);
+        showToast(`Faculty member ${data.staff.name} provisioned.`, 'success');
+        return data.staff;
+      }
+    } catch (e) {}
+    const localStaff = { id: `staff-${Date.now()}`, ...facultyData, status: 'Active' };
+    setStaff(prev => [...prev, localStaff]);
+    showToast(`Faculty account created.`, 'success');
+    return localStaff;
+  };
+
+  const updateFaculty = async (id, updates) => {
+    setStaff(prev => prev.map(s => s.id === id ? { ...s, ...updates } : s));
+    try {
+      await fetch(`/api/staff/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(updates)
+      });
+    } catch (e) {}
+    showToast('Faculty profile updated.', 'success');
+  };
+
+  const deleteFaculty = async (id) => {
+    const member = staff.find(s => s.id === id);
+    setStaff(prev => prev.filter(s => s.id !== id));
+    try {
+      await fetch(`/api/staff/${id}`, { method: 'DELETE' });
+    } catch (e) {}
+    showToast(`Faculty record for ${member?.name || ''} removed.`, 'info');
+  };
+
+  const updateUserRole = async (userId, newRole) => {
+    setStaff(prev => prev.map(s => s.id === userId ? { ...s, role: newRole } : s));
+    setStudents(prev => prev.map(st => st.id === userId ? { ...st, role: newRole } : st));
+    try {
+      await fetch(`/api/users/${userId}/role`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ role: newRole })
+      });
+    } catch (e) {}
+    showToast(`User role updated to ${newRole}.`, 'success');
+  };
+
+  const updateUserStatus = async (userId, newStatus) => {
+    setStaff(prev => prev.map(s => s.id === userId ? { ...s, status: newStatus } : s));
+    setStudents(prev => prev.map(st => st.id === userId ? { ...st, status: newStatus } : st));
+    try {
+      await fetch(`/api/users/${userId}/status`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: newStatus })
+      });
+    } catch (e) {}
+    showToast(`Account status updated to ${newStatus}.`, 'success');
+  };
+
+  const updateSystemSettings = async (updates) => {
+    setSystemSettings(prev => ({ ...prev, ...updates }));
+    try {
+      await fetch('/api/settings', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(updates)
+      });
+    } catch (e) {}
+    showToast('Institutional configuration and security policies saved.', 'success');
+  };
+
+  const logAuditEvent = (action, details) => {
+    const newLog = {
+      id: `aud-${Date.now()}`,
+      timestamp: new Date().toISOString(),
+      actor: currentStaffUser ? `${currentStaffUser.name} (${currentStaffUser.role})` : (role || 'System'),
+      action,
+      details,
+      status: 'Success'
+    };
+    setAuditLogs(prev => [newLog, ...prev]);
+  };
+
   const resetToDefaults = () => {
     localStorage.removeItem('unity_students');
     localStorage.removeItem('unity_courses');
@@ -710,13 +1507,22 @@ export const CollegeProvider = ({ children }) => {
         setIsCompactMode,
         isStudentPhotoModalOpen,
         setIsStudentPhotoModalOpen,
+        isFacultyAuthGateOpen,
+        setIsFacultyAuthGateOpen,
+        requestSwitchToFaculty,
         isAuthenticated,
         currentStudentId,
         setCurrentStudentId,
         currentStudent,
+        staff,
+        currentStaffUser,
+        firebaseUser,
+        loginWithGoogle,
         loginAsStudent,
+        loginStaffCredentials,
         loginAsFaculty,
         logout,
+        apiClient,
         studentSelfCheckIn,
         addCourse,
         updateCourse,
@@ -734,6 +1540,37 @@ export const CollegeProvider = ({ children }) => {
         publishGrades,
         unpublishGrades,
         resetToDefaults,
+        // Administrative Suite additions
+        departments,
+        addDepartment,
+        updateDepartment,
+        deleteDepartment,
+        academicTerms,
+        addAcademicTerm,
+        setActiveAcademicTerm,
+        examinations,
+        scheduleExamination,
+        cancelExamination,
+        assignments,
+        createAssignment,
+        updateAssignment,
+        submitAssignment,
+        studyMaterials,
+        setStudyMaterials,
+        addStudyMaterial,
+        deleteStudyMaterial,
+        announcements,
+        postAnnouncement,
+        deleteAnnouncement,
+        addFaculty,
+        updateFaculty,
+        deleteFaculty,
+        updateUserRole,
+        updateUserStatus,
+        systemSettings,
+        updateSystemSettings,
+        auditLogs,
+        logAuditEvent,
       }}
     >
       {children}

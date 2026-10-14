@@ -45,16 +45,13 @@ export const StudentPortalView = () => {
     updateStudent,
     showToast,
     role,
-    isCompactMode
+    isCompactMode,
+    setIsStudentPhotoModalOpen
   } = useCollege();
 
   const [checkInPasscode, setCheckInPasscode] = useState('UNITY-CS301-8924');
   const [selectedTranscriptCourse, setSelectedTranscriptCourse] = useState(null);
   const [selectedDetailCourse, setSelectedDetailCourse] = useState(null);
-  
-  // Profile picture modal & upload state
-  const [isPhotoModalOpen, setIsPhotoModalOpen] = useState(false);
-  const [customPhotoUrl, setCustomPhotoUrl] = useState('');
   const fileInputRef = useRef(null);
 
   if (!currentStudent) {
@@ -183,35 +180,35 @@ export const StudentPortalView = () => {
       onMouseMove={() => {
         if (!isSidebarCollapsed) setIsSidebarCollapsed(true);
       }}
-      className="p-5 max-w-7xl mx-auto space-y-5"
+      className="p-6 sm:p-7 lg:p-8 max-w-[1720px] mx-auto space-y-6 text-slate-100 font-sans antialiased"
     >
       {/* Student Welcome Header Card */}
-      <div className="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-2xs flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="bg-[#0c1427] p-5 sm:p-6 rounded-2xl border border-slate-800/90 shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-5">
         <div className="flex items-center gap-4">
           {/* Circular Student Profile Picture with Upload & Add Photo Functionality */}
           <div className="relative group shrink-0">
             <div
-              onClick={() => setIsPhotoModalOpen(true)}
+              onClick={() => setIsStudentPhotoModalOpen(true)}
               title="Click to add or change profile picture"
-              className="w-16 h-16 sm:w-18 sm:h-18 rounded-full border-2 border-indigo-200 ring-4 ring-indigo-50 shadow-sm overflow-hidden flex items-center justify-center relative cursor-pointer hover:ring-indigo-200 transition-all select-none"
+              className="w-16 h-16 sm:w-18 sm:h-18 rounded-2xl border border-indigo-500/40 ring-4 ring-indigo-500/10 shadow-lg overflow-hidden flex items-center justify-center relative cursor-pointer hover:border-indigo-400 transition-all select-none"
             >
               {currentStudent.avatarUrl ? (
                 <img
                   src={currentStudent.avatarUrl}
                   alt={`${currentStudent.firstName} ${currentStudent.lastName}`}
-                  className="w-full h-full object-cover rounded-full"
+                  className="w-full h-full object-cover rounded-2xl"
                 />
               ) : (
                 <div
-                  className={`w-full h-full rounded-full bg-gradient-to-br ${currentStudent.avatarBg || 'from-indigo-600 to-indigo-800'} text-white flex items-center justify-center font-bold text-2xl shadow-inner`}
+                  className={`w-full h-full rounded-2xl bg-gradient-to-br ${currentStudent.avatarBg || 'from-indigo-600 to-indigo-800'} text-white flex items-center justify-center font-bold text-2xl shadow-inner`}
                 >
                   {currentStudent.firstName ? currentStudent.firstName[0] : 'S'}
                 </div>
               )}
 
               {/* Hover overlay hint */}
-              <div className="absolute inset-0 bg-slate-900/60 rounded-full flex flex-col items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity backdrop-blur-[1px]">
-                <Camera className="w-4 h-4 text-white mb-0.5" />
+              <div className="absolute inset-0 bg-slate-900/80 rounded-2xl flex flex-col items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity backdrop-blur-[1px]">
+                <Camera className="w-4 h-4 text-indigo-300 mb-0.5" />
                 <span className="text-[9px] font-semibold tracking-wide uppercase">
                   {currentStudent.avatarUrl ? 'Change' : 'Add Photo'}
                 </span>
@@ -223,44 +220,44 @@ export const StudentPortalView = () => {
               type="button"
               onClick={(e) => {
                 e.stopPropagation();
-                setIsPhotoModalOpen(true);
+                setIsStudentPhotoModalOpen(true);
               }}
               title="Upload profile picture"
               aria-label="Upload profile picture"
-              className="absolute -bottom-0.5 -right-0.5 w-6 h-6 rounded-full bg-indigo-600 hover:bg-indigo-700 text-white flex items-center justify-center shadow-md border-2 border-white transition-transform hover:scale-110 active:scale-95 cursor-pointer"
+              className="absolute -bottom-1 -right-1 w-6 h-6 rounded-full bg-indigo-600 hover:bg-indigo-500 text-white flex items-center justify-center shadow-md border-2 border-[#0c1427] transition-transform hover:scale-110 active:scale-95 cursor-pointer"
             >
               <Camera className="w-3 h-3" />
             </button>
           </div>
 
           <div>
-            <div className="flex items-center gap-2 text-xs font-mono text-slate-500">
-              <span className="font-bold text-indigo-700">{currentStudent.studentId}</span>
+            <div className="flex items-center gap-2 text-xs font-mono text-slate-400">
+              <span className="font-bold text-indigo-400 px-2 py-0.5 rounded bg-indigo-950/80 border border-indigo-500/30">{currentStudent.studentId}</span>
               <span aria-hidden="true">·</span>
               <span>{currentStudent.cohort}</span>
               <span aria-hidden="true">·</span>
               <span>{currentStudent.year}</span>
             </div>
-            <h1 className="text-lg font-bold text-slate-900 mt-0.5">
+            <h1 className="text-lg font-bold text-white mt-1">
               Welcome back, {currentStudent.firstName} {currentStudent.lastName}
             </h1>
-            <p className="text-xs text-slate-500 mt-0.5">
+            <p className="text-xs text-slate-300 mt-0.5">
               {currentStudent.program} · {currentStudent.department}
             </p>
-            <div className="flex items-center gap-2 mt-1">
+            <div className="flex items-center gap-2 mt-2">
               <button
                 type="button"
-                onClick={() => setIsPhotoModalOpen(true)}
-                className="inline-flex items-center gap-1 text-[11px] font-medium text-indigo-600 hover:text-indigo-800 bg-indigo-50 hover:bg-indigo-100 px-2 py-0.5 rounded transition-colors"
+                onClick={() => setIsStudentPhotoModalOpen(true)}
+                className="inline-flex items-center gap-1.5 text-[11px] font-semibold text-indigo-300 hover:text-white bg-indigo-950/60 hover:bg-indigo-900/80 border border-indigo-500/30 px-2.5 py-1 rounded-lg transition-colors cursor-pointer"
               >
-                <Camera className="w-3 h-3" />
+                <Camera className="w-3.5 h-3.5 text-indigo-400" />
                 <span>{currentStudent.avatarUrl ? 'Change Profile Picture' : 'Add Profile Picture'}</span>
               </button>
               {currentStudent.avatarUrl && (
                 <button
                   type="button"
                   onClick={handleRemovePhoto}
-                  className="text-[11px] text-slate-400 hover:text-rose-600 px-1 py-0.5 transition-colors"
+                  className="text-[11px] text-slate-400 hover:text-rose-400 px-2 py-1 transition-colors cursor-pointer"
                 >
                   Remove
                 </button>
@@ -271,12 +268,12 @@ export const StudentPortalView = () => {
 
         {/* Persona Switcher only if role is faculty/admin */}
         {role !== 'student' ? (
-          <div className="flex items-center gap-2 self-start md:self-auto bg-slate-50 p-2 rounded-xl border border-slate-200 text-xs">
-            <span className="text-slate-500 font-semibold text-[11px] px-1">Switch Student:</span>
+          <div className="flex items-center gap-2 self-start md:self-auto bg-[#080d1b] p-2.5 rounded-xl border border-slate-800 text-xs">
+            <span className="text-slate-400 font-semibold text-[11px] px-1 font-mono">Switch Student:</span>
             <select
               value={currentStudent.id}
               onChange={(e) => setCurrentStudentId(e.target.value)}
-              className="px-2 py-1 text-xs font-semibold bg-white border border-slate-200 rounded-lg text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="px-2.5 py-1 text-xs font-semibold bg-[#0c1427] border border-slate-800 rounded-lg text-white focus:outline-none focus:border-indigo-500 font-mono"
             >
               {students.map((s) => (
                 <option key={s.id} value={s.id}>
@@ -289,141 +286,144 @@ export const StudentPortalView = () => {
       </div>
 
       {/* Primary Academic Metrics */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {/* GPA */}
-        <div className="p-3.5 bg-white rounded-xl border border-slate-200 shadow-2xs">
-          <div className="flex items-center justify-between text-slate-500">
-            <span className="text-[10px] font-semibold uppercase tracking-wider">
+        <div className="p-5 bg-[#0c1427] rounded-2xl border border-slate-800/90 shadow-xl flex flex-col justify-between">
+          <div className="flex items-center justify-between text-slate-400">
+            <span className="text-[10px] font-semibold uppercase tracking-wider font-mono">
               Cumulative GPA
             </span>
-            <Award className="w-3.5 h-3.5 text-amber-500" />
+            <Award className="w-4 h-4 text-amber-400" />
           </div>
-          <div className="text-2xl font-bold font-mono text-slate-900 mt-1">
+          <div className="text-2xl font-black font-mono text-white mt-2">
             {(currentStudent.gpa || 3.8).toFixed(2)}
           </div>
-          <div className="text-[11px] text-slate-500 mt-0.5">
-            {(currentStudent.gpa || 3.8) >= 3.8
-              ? "Dean's Honor Roll"
-              : (currentStudent.gpa || 3.8) < 2.0
-              ? 'Academic Probation'
-              : 'Good Academic Standing'}
+          <div className="text-[11px] text-emerald-400 font-semibold mt-1 flex items-center gap-1">
+            <CheckCircle2 className="w-3 h-3" />
+            <span>
+              {(currentStudent.gpa || 3.8) >= 3.8
+                ? "Dean's Honor Roll"
+                : (currentStudent.gpa || 3.8) < 2.0
+                ? 'Academic Probation'
+                : 'Good Standing'}
+            </span>
           </div>
         </div>
 
         {/* Attendance Rate */}
         <div 
           onClick={() => setActiveTab('attendance')}
-          className="p-3.5 bg-white rounded-xl border border-slate-200 shadow-2xs hover:border-indigo-300 transition-colors cursor-pointer group"
+          className="p-5 bg-[#0c1427] rounded-2xl border border-slate-800/90 shadow-xl hover:border-indigo-500/50 transition-all cursor-pointer group flex flex-col justify-between"
         >
-          <div className="flex items-center justify-between text-slate-500">
-            <span className="text-[10px] font-semibold uppercase tracking-wider">
+          <div className="flex items-center justify-between text-slate-400">
+            <span className="text-[10px] font-semibold uppercase tracking-wider font-mono">
               Term Attendance
             </span>
-            <Radio className="w-3.5 h-3.5 text-indigo-600 group-hover:scale-110 transition-transform" />
+            <Radio className="w-4 h-4 text-emerald-400 group-hover:scale-110 transition-transform" />
           </div>
           <div
-            className={`text-2xl font-bold font-mono mt-1 ${
-              (currentStudent.attendanceRate || 95) < 75 ? 'text-rose-600' : 'text-emerald-700'
+            className={`text-2xl font-black font-mono mt-2 ${
+              (currentStudent.attendanceRate || 95) < 75 ? 'text-rose-400' : 'text-emerald-400'
             }`}
           >
             {currentStudent.attendanceRate || 95}%
           </div>
-          <div className="text-[11px] text-slate-500 mt-0.5 flex items-center justify-between">
+          <div className="text-[11px] text-slate-400 mt-1 flex items-center justify-between">
             {(currentStudent.attendanceRate || 95) < 75 ? (
-              <span className="text-rose-600 font-semibold flex items-center gap-1">
+              <span className="text-rose-400 font-semibold flex items-center gap-1">
                 <AlertTriangle className="w-3 h-3" /> Below 75%
               </span>
             ) : (
-              <span>Exceeds threshold</span>
+              <span className="text-emerald-400 font-medium">Exceeds threshold</span>
             )}
-            <span className="text-indigo-600 font-semibold group-hover:underline">Logs &rarr;</span>
+            <span className="text-indigo-400 font-semibold group-hover:underline">Logs &rarr;</span>
           </div>
         </div>
 
         {/* Enrolled Courses & Timetable */}
         <div 
           onClick={() => setActiveTab('timetable')}
-          className="p-3.5 bg-white rounded-xl border border-slate-200 shadow-2xs hover:border-indigo-300 transition-colors cursor-pointer group"
+          className="p-5 bg-[#0c1427] rounded-2xl border border-slate-800/90 shadow-xl hover:border-indigo-500/50 transition-all cursor-pointer group flex flex-col justify-between"
         >
-          <div className="flex items-center justify-between text-slate-500">
-            <span className="text-[10px] font-semibold uppercase tracking-wider">
+          <div className="flex items-center justify-between text-slate-400">
+            <span className="text-[10px] font-semibold uppercase tracking-wider font-mono">
               Class Timetable
             </span>
-            <BookOpen className="w-3.5 h-3.5 text-slate-400 group-hover:text-indigo-600 transition-colors" />
+            <BookOpen className="w-4 h-4 text-indigo-400 group-hover:text-indigo-300 transition-colors" />
           </div>
-          <div className="text-2xl font-bold font-mono text-slate-900 mt-1">
+          <div className="text-2xl font-black font-mono text-white mt-2">
             {enrolledCourses.length} Classes
           </div>
-          <div className="text-[11px] text-slate-500 mt-0.5 flex items-center justify-between">
+          <div className="text-[11px] text-slate-400 mt-1 flex items-center justify-between">
             <span className="font-mono">{totalCredits} Credit Hours</span>
-            <span className="text-indigo-600 font-semibold group-hover:underline">View Grid &rarr;</span>
+            <span className="text-indigo-400 font-semibold group-hover:underline">Schedule &rarr;</span>
           </div>
         </div>
 
         {/* Faculty Advisor */}
-        <div className="p-3.5 bg-white rounded-xl border border-slate-200 shadow-2xs">
-          <div className="flex items-center justify-between text-slate-500">
-            <span className="text-[10px] font-semibold uppercase tracking-wider">
+        <div className="p-5 bg-[#0c1427] rounded-2xl border border-slate-800/90 shadow-xl flex flex-col justify-between">
+          <div className="flex items-center justify-between text-slate-400">
+            <span className="text-[10px] font-semibold uppercase tracking-wider font-mono">
               Academic Advisor
             </span>
-            <UserCheck className="w-3.5 h-3.5 text-slate-400" />
+            <UserCheck className="w-4 h-4 text-purple-400" />
           </div>
-          <div className="text-sm font-bold text-slate-900 mt-1 truncate">
+          <div className="text-sm font-bold text-white mt-2 truncate">
             {currentStudent.advisor}
           </div>
-          <div className="text-[11px] text-indigo-600 mt-0.5 truncate font-mono">
-            Turing Hall 410 · Office Hours
+          <div className="text-[11px] text-indigo-300 mt-1 truncate font-mono">
+            Turing Hall 410 · Advising
           </div>
         </div>
       </div>
 
       {/* Official Student Credentials & Institutional Record */}
-      <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-2xs">
-        <div className="flex items-center justify-between pb-2.5 mb-2.5 border-b border-slate-100 flex-wrap gap-2">
+      <div className="bg-[#0c1427] p-5 rounded-2xl border border-slate-800/90 shadow-xl">
+        <div className="flex items-center justify-between pb-3 mb-3 border-b border-slate-800 flex-wrap gap-2">
           <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-            <h3 className="text-xs font-bold text-slate-900 uppercase tracking-wider font-mono">
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+            <h3 className="text-xs font-bold text-white uppercase tracking-wider font-mono">
               Official Student Record & Verified Credentials
             </h3>
           </div>
-          <span className="text-[11px] font-mono px-2 py-0.5 bg-slate-100 text-slate-600 rounded border border-slate-200">
+          <span className="text-[11px] font-mono px-2.5 py-0.5 bg-slate-900 text-slate-300 rounded-lg border border-slate-800">
             Status: {currentStudent.status} · Matriculated
           </span>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 text-xs">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 text-xs">
           <div>
             <span className="text-[10px] uppercase font-semibold text-slate-400 font-mono block">Student ID</span>
-            <span className="font-mono font-bold text-indigo-700 block mt-0.5">{currentStudent.studentId}</span>
+            <span className="font-mono font-bold text-indigo-400 block mt-0.5">{currentStudent.studentId}</span>
           </div>
 
           <div>
             <span className="text-[10px] uppercase font-semibold text-slate-400 font-mono block">University Email</span>
-            <span className="font-mono text-slate-800 truncate block mt-0.5" title={currentStudent.email}>
+            <span className="font-mono text-slate-200 truncate block mt-0.5" title={currentStudent.email}>
               {currentStudent.email}
             </span>
           </div>
 
           <div>
             <span className="text-[10px] uppercase font-semibold text-slate-400 font-mono block">Phone Number</span>
-            <span className="font-mono text-slate-800 block mt-0.5">{currentStudent.phone}</span>
+            <span className="font-mono text-slate-200 block mt-0.5">{currentStudent.phone}</span>
           </div>
 
           <div>
             <span className="text-[10px] uppercase font-semibold text-slate-400 font-mono block">Degree Program</span>
-            <span className="text-slate-800 font-medium truncate block mt-0.5" title={currentStudent.program}>
+            <span className="text-slate-200 font-medium truncate block mt-0.5" title={currentStudent.program}>
               {currentStudent.program}
             </span>
           </div>
 
           <div>
             <span className="text-[10px] uppercase font-semibold text-slate-400 font-mono block">Academic Standing</span>
-            <span className="text-slate-800 font-medium block mt-0.5">{currentStudent.year} ({currentStudent.cohort})</span>
+            <span className="text-slate-200 font-medium block mt-0.5">{currentStudent.year} ({currentStudent.cohort})</span>
           </div>
 
           <div>
             <span className="text-[10px] uppercase font-semibold text-slate-400 font-mono block">Enrolled Date</span>
-            <span className="font-mono text-slate-800 block mt-0.5">{currentStudent.enrollmentDate}</span>
+            <span className="font-mono text-slate-200 block mt-0.5">{currentStudent.enrollmentDate}</span>
           </div>
         </div>
       </div>
@@ -522,23 +522,23 @@ export const StudentPortalView = () => {
       )}
 
       {/* Grid: My Enrolled Courses + Clean Gradebook Transcripts */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
         {/* My Enrolled Courses Roster */}
-        <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-2xs space-y-3">
-          <div className="flex items-center justify-between">
-            <h3 className="text-xs font-bold text-slate-900 flex items-center gap-2">
-              <BookOpen className="w-3.5 h-3.5 text-indigo-600" />
+        <div className="bg-[#0c1427] p-5 sm:p-6 rounded-2xl border border-slate-800/90 shadow-xl space-y-4">
+          <div className="flex items-center justify-between pb-3 border-b border-slate-800">
+            <h3 className="text-sm font-bold text-white flex items-center gap-2">
+              <BookOpen className="w-4 h-4 text-indigo-400" />
               <span>My Enrolled Courses ({enrolledCourses.length})</span>
             </h3>
             <button
               onClick={() => setActiveTab('courses')}
-              className="text-xs font-semibold text-indigo-600 hover:text-indigo-800"
+              className="text-xs font-semibold text-indigo-400 hover:text-indigo-300 cursor-pointer"
             >
               Browse Catalog &rarr;
             </button>
           </div>
 
-          <div className="space-y-2">
+          <div className="space-y-3">
             {enrolledCourses.length === 0 ? (
               <div className="p-6 text-center text-xs text-slate-400 italic">
                 You have not registered for any courses yet.
@@ -552,19 +552,19 @@ export const StudentPortalView = () => {
                 return (
                   <div
                     key={course.id}
-                    className="p-3 rounded-lg border border-slate-200 hover:border-slate-300 bg-slate-50/50 hover:bg-slate-50 transition-all flex flex-col justify-between"
+                    className="p-4 rounded-xl border border-slate-800/80 hover:border-slate-700 bg-[#080d1b] transition-all flex flex-col justify-between"
                   >
-                    <div className="flex items-start justify-between gap-2">
+                    <div className="flex items-start justify-between gap-3">
                       <div>
-                        <div className="flex items-center gap-1.5 font-mono text-[11px] mb-0.5">
-                          <span className="font-bold text-indigo-700">{course.code}</span>
-                          <span aria-hidden="true" className="text-slate-400">·</span>
-                          <span className="text-slate-500">{course.credits} Credits</span>
+                        <div className="flex items-center gap-2 font-mono text-[11px] mb-1">
+                          <span className="font-bold text-indigo-400 px-2 py-0.5 rounded bg-indigo-950/80 border border-indigo-500/30">{course.code}</span>
+                          <span aria-hidden="true" className="text-slate-600">·</span>
+                          <span className="text-slate-400">{course.credits} Credits</span>
                         </div>
-                        <h4 className="font-bold text-slate-900 text-xs">
+                        <h4 className="font-bold text-white text-xs">
                           {course.title}
                         </h4>
-                        <div className="text-[11px] text-slate-500 mt-0.5">
+                        <div className="text-[11px] text-slate-400 mt-1">
                           {course.schedule?.days?.join(', ')} · {course.schedule?.time} · {course.schedule?.room}
                         </div>
                       </div>
@@ -572,10 +572,10 @@ export const StudentPortalView = () => {
                       <div className="text-right shrink-0">
                         {gradeRec ? (
                           <>
-                            <div className="font-mono font-bold text-slate-900 text-xs">
+                            <div className="font-mono font-bold text-white text-xs">
                               {gradeRec.weightedPercentage}%
                             </div>
-                            <span className="font-mono font-bold text-indigo-700 text-[10px] bg-indigo-50 px-1.5 py-0.5 rounded border border-indigo-200">
+                            <span className="font-mono font-bold text-indigo-300 text-[10px] bg-indigo-950/80 px-2 py-0.5 rounded border border-indigo-500/30">
                               {gradeRec.letterGrade}
                             </span>
                           </>
@@ -585,13 +585,13 @@ export const StudentPortalView = () => {
                       </div>
                     </div>
 
-                    <div className="mt-2 pt-2 border-t border-slate-100 flex items-center justify-between text-xs">
-                      <span className="text-slate-500 text-[11px]">
+                    <div className="mt-3 pt-2.5 border-t border-slate-800/80 flex items-center justify-between text-xs">
+                      <span className="text-slate-400 text-[11px]">
                         Faculty: {course.instructor?.name}
                       </span>
                       <button
                         onClick={() => setSelectedDetailCourse(course)}
-                        className="text-indigo-600 font-semibold hover:text-indigo-800 text-[11px]"
+                        className="text-indigo-400 font-semibold hover:text-indigo-300 text-[11px] cursor-pointer"
                       >
                         Syllabus &rarr;
                       </button>
@@ -604,54 +604,54 @@ export const StudentPortalView = () => {
         </div>
 
         {/* My Gradebook Breakdown */}
-        <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-2xs space-y-3">
-          <div className="flex items-center justify-between">
-            <h3 className="text-xs font-bold text-slate-900 flex items-center gap-2">
-              <Award className="w-3.5 h-3.5 text-amber-500" />
+        <div className="bg-[#0c1427] p-5 sm:p-6 rounded-2xl border border-slate-800/90 shadow-xl space-y-4">
+          <div className="flex items-center justify-between pb-3 border-b border-slate-800">
+            <h3 className="text-sm font-bold text-white flex items-center gap-2">
+              <Award className="w-4 h-4 text-amber-400" />
               <span>Official Grades & Academic Transcripts</span>
             </h3>
             <TableDensityToggle />
           </div>
 
-          <div className="space-y-2">
+          <div className="space-y-3">
             {myGrades.map(({ course, record }) => {
               if (!record) return null;
 
               return (
                 <div
                   key={course.id}
-                  className={`rounded-lg border border-slate-200 bg-white flex items-center justify-between hover:bg-slate-50/70 transition-colors ${
-                    isCompactMode ? 'p-2' : 'p-3'
+                  className={`rounded-xl border border-slate-800/80 bg-[#080d1b] flex items-center justify-between hover:bg-slate-900/60 transition-colors ${
+                    isCompactMode ? 'p-2.5' : 'p-3.5'
                   }`}
                 >
                   <div className="min-w-0 pr-2">
                     <div className="flex items-center gap-2 text-xs font-mono">
-                      <span className="font-bold text-indigo-700">{course.code}</span>
+                      <span className="font-bold text-indigo-400">{course.code}</span>
                       <span className="text-[10px] text-slate-400">({record.status})</span>
                     </div>
-                    <div className="text-xs font-semibold text-slate-900 truncate mt-0.5">
+                    <div className="text-xs font-semibold text-white truncate mt-1">
                       {course.title}
                     </div>
                     {record.remarks && (
-                      <p className="text-[10px] text-slate-500 truncate italic mt-0.5">
+                      <p className="text-[10px] text-slate-400 truncate italic mt-0.5">
                         &quot;{record.remarks}&quot;
                       </p>
                     )}
                   </div>
 
-                  <div className="flex items-center gap-2.5 shrink-0">
+                  <div className="flex items-center gap-3 shrink-0">
                     <div className="text-right">
-                      <div className="text-xs font-mono font-bold text-slate-900">
+                      <div className="text-xs font-mono font-bold text-white">
                         {record.weightedPercentage}%
                       </div>
-                      <div className="text-[10px] font-mono text-indigo-700 font-bold">
+                      <div className="text-[10px] font-mono text-indigo-300 font-bold">
                         {record.letterGrade} ({record.gpaPoint.toFixed(1)} pts)
                       </div>
                     </div>
 
                     <button
                       onClick={() => setSelectedTranscriptCourse(course)}
-                      className="p-1.5 text-indigo-600 hover:text-indigo-800 hover:bg-indigo-50 rounded transition-colors"
+                      className="p-1.5 text-indigo-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors cursor-pointer"
                       title="View Official Transcript"
                     >
                       <FileText className="w-4 h-4" />
@@ -688,153 +688,6 @@ export const StudentPortalView = () => {
         className="hidden"
         onChange={handleImageFileUpload}
       />
-
-      {/* Profile Picture Upload & Customization Modal */}
-      {isPhotoModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-xs animate-in fade-in duration-150">
-          <div className="bg-white rounded-2xl max-w-md w-full shadow-2xl border border-slate-200 overflow-hidden">
-            {/* Modal Header */}
-            <div className="p-4 border-b border-slate-100 flex items-center justify-between bg-slate-50">
-              <div className="flex items-center gap-2">
-                <div className="p-1.5 bg-indigo-50 text-indigo-600 rounded-lg">
-                  <Camera className="w-4 h-4" />
-                </div>
-                <div>
-                  <h3 className="text-sm font-bold text-slate-900">Student Profile Picture</h3>
-                  <p className="text-[11px] text-slate-500">Upload or select an avatar photo</p>
-                </div>
-              </div>
-              <button
-                onClick={() => setIsPhotoModalOpen(false)}
-                className="p-1 text-slate-400 hover:text-slate-700 hover:bg-slate-200/60 rounded transition-colors"
-                aria-label="Close"
-              >
-                <X className="w-4 h-4" />
-              </button>
-            </div>
-
-            {/* Modal Body */}
-            <div className="p-5 space-y-4 max-h-[75vh] overflow-y-auto">
-              {/* Live Preview Circle */}
-              <div className="flex flex-col items-center justify-center text-center">
-                <div className="w-20 h-20 rounded-full border-4 border-indigo-100 ring-4 ring-indigo-50/60 shadow-md overflow-hidden flex items-center justify-center relative mb-2 bg-slate-100">
-                  {currentStudent.avatarUrl ? (
-                    <img
-                      src={currentStudent.avatarUrl}
-                      alt="Student Preview"
-                      className="w-full h-full object-cover"
-                    />
-                  ) : (
-                    <div
-                      className={`w-full h-full bg-gradient-to-br ${currentStudent.avatarBg || 'from-indigo-600 to-indigo-800'} text-white flex items-center justify-center font-bold text-2xl`}
-                    >
-                      {currentStudent.firstName ? currentStudent.firstName[0] : 'S'}
-                    </div>
-                  )}
-                </div>
-                <div className="text-xs font-semibold text-slate-800">
-                  {currentStudent.firstName} {currentStudent.lastName}
-                </div>
-                <div className="text-[11px] font-mono text-slate-500">
-                  {currentStudent.studentId}
-                </div>
-              </div>
-
-              {/* Action 1: Upload from Device */}
-              <div>
-                <label className="block text-[11px] font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
-                  1. Upload from Computer or Phone
-                </label>
-                <button
-                  type="button"
-                  onClick={() => fileInputRef.current?.click()}
-                  className="w-full py-2.5 px-3 border-2 border-dashed border-indigo-200 hover:border-indigo-400 bg-indigo-50/40 hover:bg-indigo-50/80 rounded-xl flex items-center justify-center gap-2 text-indigo-700 font-semibold text-xs transition-colors cursor-pointer group"
-                >
-                  <Upload className="w-3.5 h-3.5 text-indigo-600 group-hover:scale-110 transition-transform" />
-                  <span>Choose Image File (PNG, JPG, WebP)</span>
-                </button>
-              </div>
-
-              {/* Action 2: Quick Sample Student Portraits */}
-              <div>
-                <label className="block text-[11px] font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
-                  2. Choose from Student Portraits
-                </label>
-                <div className="grid grid-cols-6 gap-2">
-                  {SAMPLE_PORTRAITS.map((p, idx) => (
-                    <button
-                      key={idx}
-                      type="button"
-                      onClick={() => handleSelectPresetPhoto(p.url)}
-                      title={p.label}
-                      className={`w-10 h-10 rounded-full overflow-hidden border-2 transition-all p-0.5 hover:scale-105 cursor-pointer ${
-                        currentStudent.avatarUrl === p.url
-                          ? 'border-indigo-600 ring-2 ring-indigo-300'
-                          : 'border-slate-200 hover:border-indigo-400'
-                      }`}
-                    >
-                      <img
-                        src={p.url}
-                        alt={p.label}
-                        className="w-full h-full object-cover rounded-full"
-                      />
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Action 3: Image URL input */}
-              <div>
-                <label className="block text-[11px] font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
-                  3. Or Enter Web Image URL
-                </label>
-                <form onSubmit={handleApplyCustomUrl} className="flex gap-2">
-                  <input
-                    type="url"
-                    placeholder="https://example.com/photo.jpg"
-                    value={customPhotoUrl}
-                    onChange={(e) => setCustomPhotoUrl(e.target.value)}
-                    className="flex-1 px-2.5 py-1 text-xs border border-slate-200 rounded-lg text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                  />
-                  <button
-                    type="submit"
-                    disabled={!customPhotoUrl.trim()}
-                    className="px-3 py-1 text-xs font-semibold bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 disabled:opacity-40 transition-colors"
-                  >
-                    Apply
-                  </button>
-                </form>
-              </div>
-
-              {/* Action 4: Remove photo if set */}
-              {currentStudent.avatarUrl && (
-                <div className="pt-2 border-t border-slate-100 flex items-center justify-between">
-                  <span className="text-[11px] text-slate-500">Remove picture and restore initials:</span>
-                  <button
-                    type="button"
-                    onClick={handleRemovePhoto}
-                    className="flex items-center gap-1 px-2 py-1 text-xs font-semibold text-rose-600 hover:text-rose-700 hover:bg-rose-50 rounded transition-colors"
-                  >
-                    <Trash2 className="w-3 h-3" />
-                    <span>Remove</span>
-                  </button>
-                </div>
-              )}
-            </div>
-
-            {/* Modal Footer */}
-            <div className="p-3 border-t border-slate-100 bg-slate-50 flex items-center justify-end">
-              <button
-                type="button"
-                onClick={() => setIsPhotoModalOpen(false)}
-                className="px-3.5 py-1.5 text-xs font-semibold bg-slate-900 text-white rounded-lg hover:bg-slate-800 transition-colors"
-              >
-                Done
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 };

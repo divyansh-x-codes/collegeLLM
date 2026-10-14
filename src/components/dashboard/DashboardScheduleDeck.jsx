@@ -38,25 +38,25 @@ export const DashboardScheduleDeck = () => {
   }, [selectedDay]);
 
   return (
-    <div className="bg-white rounded-2xl border border-slate-200/90 shadow-2xs overflow-hidden transition-all">
+    <div className="bg-[#0c1427] rounded-2xl border border-slate-800 shadow-xl overflow-hidden transition-all">
       {/* Top Header of the Deck Section */}
-      <div className="p-5 sm:p-6 pb-4 border-b border-slate-100 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+      <div className="p-5 sm:p-6 pb-4 border-b border-slate-800 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center">
+            <div className="w-8 h-8 rounded-lg bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 flex items-center justify-center">
               <Layers className="w-4 h-4" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h2 className="text-lg font-bold text-slate-900 tracking-tight">
+                <h2 className="text-lg font-bold text-white tracking-tight">
                   Class Schedule & Daily Routine
                 </h2>
-                <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-teal-50 text-teal-700 border border-teal-200 uppercase tracking-wider flex items-center gap-1">
-                  <span className="w-1.5 h-1.5 rounded-full bg-teal-500 animate-pulse" />
+                <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-teal-500/10 text-teal-300 border border-teal-500/30 uppercase tracking-wider flex items-center gap-1">
+                  <span className="w-1.5 h-1.5 rounded-full bg-teal-400 animate-pulse" />
                   Deck Perspective
                 </span>
               </div>
-              <p className="text-xs text-slate-500 mt-0.5">
+              <p className="text-xs text-slate-400 mt-0.5">
                 Hover over layered day cards to inspect; select any day to bring its daily routine to the front.
               </p>
             </div>
@@ -65,13 +65,13 @@ export const DashboardScheduleDeck = () => {
 
         {/* View Toggle & Link to Full Timetable */}
         <div className="flex items-center gap-2 self-start md:self-auto">
-          <div className="inline-flex p-1 bg-slate-100 rounded-lg text-xs font-medium text-slate-600">
+          <div className="inline-flex p-1 bg-[#080d1b] border border-slate-800 rounded-lg text-xs font-medium text-slate-400">
             <button
               onClick={() => setDeckMode('deck')}
               className={`px-2.5 py-1 rounded-md transition-all cursor-pointer ${
                 deckMode === 'deck'
-                  ? 'bg-white text-slate-900 font-semibold shadow-2xs'
-                  : 'hover:text-slate-900'
+                  ? 'bg-indigo-600 text-white font-semibold shadow-xs'
+                  : 'hover:text-white'
               }`}
             >
               Deck Stack
@@ -80,8 +80,8 @@ export const DashboardScheduleDeck = () => {
               onClick={() => setDeckMode('grid')}
               className={`px-2.5 py-1 rounded-md transition-all cursor-pointer ${
                 deckMode === 'grid'
-                  ? 'bg-white text-slate-900 font-semibold shadow-2xs'
-                  : 'hover:text-slate-900'
+                  ? 'bg-indigo-600 text-white font-semibold shadow-xs'
+                  : 'hover:text-white'
               }`}
             >
               Grid View
@@ -90,7 +90,7 @@ export const DashboardScheduleDeck = () => {
 
           <button
             onClick={() => setActiveTab('timetable')}
-            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-slate-700 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-lg transition-colors cursor-pointer"
+            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-slate-300 bg-[#080d1b] hover:bg-slate-800 border border-slate-800 rounded-lg transition-colors cursor-pointer"
             title="Open Full Campus Timetable"
           >
             <span>Full Timetable</span>
@@ -100,14 +100,14 @@ export const DashboardScheduleDeck = () => {
       </div>
 
       {/* The Deck Perspective Stage */}
-      <div className="p-5 sm:p-6 bg-gradient-to-b from-slate-50/80 to-slate-100/40 border-b border-slate-200/80">
+      <div className="p-5 sm:p-6 bg-[#080d1b]/70 border-b border-slate-800">
         <div className="flex items-center justify-between mb-3 text-xs">
-          <div className="flex items-center gap-2 text-slate-500 font-medium">
-            <CalendarDays className="w-4 h-4 text-indigo-500" />
+          <div className="flex items-center gap-2 text-slate-400 font-medium">
+            <CalendarDays className="w-4 h-4 text-indigo-400" />
             <span>Select Day to Inspect:</span>
-            <span className="font-semibold text-slate-800">{selectedDay}</span>
+            <span className="font-semibold text-white">{selectedDay}</span>
           </div>
-          <span className="text-[11px] font-mono text-slate-400 hidden sm:inline">
+          <span className="text-[11px] font-mono text-slate-500 hidden sm:inline">
             Interactive Deck Hovering Effect
           </span>
         </div>
@@ -149,8 +149,8 @@ export const DashboardScheduleDeck = () => {
                       isSelected
                         ? 'bg-slate-900 text-white border-teal-500 shadow-xl ring-2 ring-teal-400/30'
                         : isHovered
-                        ? 'bg-white text-slate-900 border-indigo-300 shadow-lg'
-                        : 'bg-white/95 text-slate-700 border-slate-200/90 shadow-2xs hover:border-slate-300'
+                        ? 'bg-[#111c38] text-white border-indigo-400 shadow-lg'
+                        : 'bg-[#0c1427] text-slate-300 border-slate-800 shadow-xs hover:border-slate-700'
                     }`}
                   >
                     {/* Badge on the card */}
@@ -167,22 +167,22 @@ export const DashboardScheduleDeck = () => {
                       )}
                     </div>
 
-                    <div className={`text-sm sm:text-base font-bold tracking-tight ${isSelected ? 'text-white' : 'text-slate-900'}`}>
+                    <div className={`text-sm sm:text-base font-bold tracking-tight ${isSelected ? 'text-white' : 'text-slate-100'}`}>
                       {day.label}
                     </div>
 
                     <div className="flex items-center justify-center gap-1 mt-1">
-                      <span className={`text-[11px] font-mono ${isSelected ? 'text-teal-200' : 'text-slate-500'}`}>
+                      <span className={`text-[11px] font-mono ${isSelected ? 'text-teal-200' : 'text-slate-400'}`}>
                         {count} {count === 1 ? 'class' : 'classes'}
                       </span>
                     </div>
 
                     {/* Visual Layer Depth Indicator Footprint */}
                     <div className={`mt-2 pt-1.5 border-t text-[10px] font-mono flex items-center justify-center gap-1 ${
-                      isSelected ? 'border-slate-800 text-teal-300' : 'border-slate-100 text-slate-400'
+                      isSelected ? 'border-slate-800 text-teal-300' : 'border-slate-800/80 text-slate-500'
                     }`}>
                       <span>Layer {idx + 1}</span>
-                      {idx === 0 && <span className="text-teal-600 font-bold">(Front)</span>}
+                      {idx === 0 && <span className="text-teal-400 font-bold">(Front)</span>}
                     </div>
                   </div>
                 );
@@ -203,7 +203,7 @@ export const DashboardScheduleDeck = () => {
                   className={`p-3.5 rounded-xl border cursor-pointer transition-all duration-200 text-center ${
                     isSelected
                       ? 'bg-slate-900 text-white border-teal-500 shadow-md ring-2 ring-teal-400/20 -translate-y-1'
-                      : 'bg-white text-slate-800 border-slate-200 hover:border-indigo-300 hover:bg-slate-50'
+                      : 'bg-[#0c1427] text-slate-200 border-slate-800 hover:border-indigo-400 hover:bg-[#111c38]'
                   }`}
                 >
                   <div className="text-[10px] font-mono text-slate-400 uppercase">

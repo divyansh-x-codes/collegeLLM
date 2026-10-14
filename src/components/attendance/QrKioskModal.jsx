@@ -14,21 +14,21 @@ export const QrKioskModal = ({ isOpen, onClose }) => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs modal-backdrop-animate">
-      <div className="relative w-full max-w-lg bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden text-center p-6 space-y-5 modal-content-animate">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-md modal-backdrop-animate">
+      <div className="relative w-full max-w-lg bg-[#0f172a] rounded-2xl shadow-2xl border border-slate-700/80 overflow-hidden text-center p-6 space-y-5 modal-content-animate text-slate-100">
         {/* Header */}
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between pb-3 border-b border-slate-800">
           <div className="text-left">
-            <span className="text-xs font-mono font-bold text-indigo-700">
+            <span className="text-xs font-mono font-bold text-indigo-400">
               {liveSession.courseCode} · Live Kiosk
             </span>
-            <h2 className="text-base font-bold text-slate-900 mt-0.5">
+            <h2 className="text-base font-bold text-white mt-0.5">
               Student Attendance Check-In Screen
             </h2>
           </div>
           <button
             onClick={onClose}
-            className="text-slate-400 hover:text-slate-600 p-1 rounded-md cursor-pointer"
+            className="text-slate-400 hover:text-white p-1 rounded-md cursor-pointer"
             aria-label="Close kiosk"
           >
             <X className="w-5 h-5" />
@@ -36,8 +36,8 @@ export const QrKioskModal = ({ isOpen, onClose }) => {
         </div>
 
         {/* QR Code Presentation Box */}
-        <div className="p-5 bg-slate-50 rounded-xl border border-slate-200 flex flex-col items-center justify-center space-y-3">
-          <div className="relative p-3.5 bg-white rounded-xl shadow-xs border border-slate-200">
+        <div className="p-5 bg-[#080d1b] rounded-xl border border-slate-800 flex flex-col items-center justify-center space-y-3">
+          <div className="relative p-3.5 bg-white rounded-xl shadow-md border border-slate-700">
             <svg
               className="w-44 h-44 text-slate-900"
               viewBox="0 0 100 100"
@@ -86,16 +86,16 @@ export const QrKioskModal = ({ isOpen, onClose }) => {
           </div>
 
           <div className="text-center pt-2 space-y-1">
-            <p className="text-xs text-slate-500">
+            <p className="text-xs text-slate-400">
               Students scan with camera or enter attendance passcode:
             </p>
             <div className="flex items-center justify-center gap-2">
-              <span className="font-mono font-bold text-sm text-indigo-700 bg-white px-3 py-1 rounded-md border border-slate-200 tracking-wider">
+              <span className="font-mono font-bold text-sm text-indigo-300 bg-[#0c1427] px-3 py-1 rounded-md border border-slate-700 tracking-wider">
                 {tokenCode}
               </span>
               <button
                 onClick={refreshPasscode}
-                className="p-1.5 text-slate-400 hover:text-indigo-600 hover:bg-slate-200/50 rounded-md transition-colors cursor-pointer"
+                className="p-1.5 text-slate-400 hover:text-white hover:bg-slate-800 rounded-md transition-colors cursor-pointer"
                 title="Generate new passcode"
               >
                 <RefreshCw className="w-4 h-4" />
@@ -105,16 +105,16 @@ export const QrKioskModal = ({ isOpen, onClose }) => {
         </div>
 
         {/* Demo trigger */}
-        <div className="flex items-center justify-between text-xs pt-1">
-          <div className="flex items-center gap-1 text-slate-500 text-[11px]">
-            <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+        <div className="flex items-center justify-between text-xs pt-1 border-t border-slate-800">
+          <div className="flex items-center gap-1 text-slate-400 text-[11px]">
+            <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
             <span>Encrypted Time-Bound Key</span>
           </div>
           <button
             onClick={simulateRandomCheckIn}
-            className="flex items-center gap-1 px-3 py-1.5 text-xs font-semibold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 rounded-lg transition-colors cursor-pointer"
+            className="flex items-center gap-1 px-3 py-1.5 text-xs font-semibold text-white bg-indigo-600 hover:bg-indigo-500 rounded-lg transition-colors cursor-pointer shadow-md"
           >
-            <Sparkles className="w-3.5 h-3.5 text-indigo-600" />
+            <Sparkles className="w-3.5 h-3.5" />
             <span>Simulate Check-In</span>
           </button>
         </div>

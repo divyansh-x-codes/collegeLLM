@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useCollege } from '../../context/CollegeContext.jsx';
-import { X, UserPlus, AlertCircle } from 'lucide-react';
+import { X, UserPlus, AlertCircle, Check } from 'lucide-react';
 
 const DEPARTMENTS = [
   'Computer Science & Engineering',
@@ -62,15 +62,13 @@ export const StudentRegisterModal = ({ isOpen, onClose }) => {
       cohort,
       enrollmentDate,
       status,
-      gpa: 4.0,
-      attendanceRate: 100.0,
-      advisor: advisor.trim(),
+      advisor,
+      address,
       emergencyContact: {
-        name: emName.trim() || 'Primary Guardian',
-        relationship: emRel.trim() || 'Family',
-        phone: emPhone.trim() || phone.trim(),
+        name: emName || 'Helen Lin',
+        relationship: emRel || 'Parent',
+        phone: emPhone || '+1 (555) 999-8877',
       },
-      address: address.trim(),
       enrolledCourseIds: selectedCourseIds,
     });
 
@@ -84,26 +82,26 @@ export const StudentRegisterModal = ({ isOpen, onClose }) => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-xs overflow-y-auto modal-backdrop-animate">
-      <div className="relative w-full max-w-2xl bg-white rounded-xl shadow-2xl border border-slate-200 overflow-hidden my-8 modal-content-animate">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs overflow-y-auto modal-backdrop-animate antialiased font-sans">
+      <div className="relative w-full max-w-2xl bg-[#0c1427] text-slate-100 rounded-xl shadow-2xl border border-slate-800 overflow-hidden my-8 modal-content-animate">
         {/* Header */}
-        <div className="flex items-center justify-between px-5 py-3.5 border-b border-slate-200 bg-slate-50">
+        <div className="flex items-center justify-between px-5 py-4 border-b border-slate-800 bg-[#080d1b]">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-indigo-600 text-white flex items-center justify-center">
+            <div className="w-8 h-8 rounded-lg bg-indigo-600 text-white flex items-center justify-center shadow-md shadow-indigo-600/30">
               <UserPlus className="w-4 h-4" />
             </div>
             <div>
-              <h2 className="text-sm font-bold text-slate-900">
+              <h2 className="text-sm font-bold text-slate-100 leading-tight">
                 New Student Matriculation & Registration
               </h2>
-              <p className="text-xs text-slate-500">
+              <p className="text-xs text-slate-400">
                 Official academic registry entry and initial course enrollment
               </p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="text-slate-400 hover:text-slate-600 p-1 rounded-md cursor-pointer"
+            className="text-slate-400 hover:text-white p-1 rounded-md transition-colors cursor-pointer"
             aria-label="Close dialog"
           >
             <X className="w-4 h-4" />
@@ -111,9 +109,9 @@ export const StudentRegisterModal = ({ isOpen, onClose }) => {
         </div>
 
         {/* Form Body */}
-        <form onSubmit={handleSubmit} className="p-5 space-y-4 max-h-[76vh] overflow-y-auto">
+        <form onSubmit={handleSubmit} className="p-5 space-y-4 max-h-[76vh] overflow-y-auto custom-scrollbar">
           {error && (
-            <div className="flex items-center gap-2 p-3 text-xs bg-rose-50 text-rose-700 border border-rose-200 rounded-lg">
+            <div className="flex items-center gap-2 p-3 text-xs bg-rose-500/15 text-rose-300 border border-rose-500/30 rounded-lg">
               <AlertCircle className="w-4 h-4 shrink-0" />
               <span>{error}</span>
             </div>
@@ -121,12 +119,12 @@ export const StudentRegisterModal = ({ isOpen, onClose }) => {
 
           {/* Personal Info */}
           <div>
-            <h3 className="text-xs font-bold text-slate-900 uppercase tracking-wider mb-2">
+            <h3 className="text-xs font-bold text-slate-300 uppercase tracking-wider mb-2">
               1. Personal Information
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">
+                <label className="block text-xs font-semibold text-slate-300 mb-1">
                   First Name *
                 </label>
                 <input
@@ -134,12 +132,12 @@ export const StudentRegisterModal = ({ isOpen, onClose }) => {
                   value={firstName}
                   onChange={(e) => setFirstName(e.target.value)}
                   placeholder="e.g. Maya"
-                  className="w-full px-3 py-2 text-xs border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full px-3 py-2 text-xs border border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-[#070b14] text-slate-100 placeholder:text-slate-500"
                   required
                 />
               </div>
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">
+                <label className="block text-xs font-semibold text-slate-300 mb-1">
                   Last Name *
                 </label>
                 <input
@@ -147,7 +145,7 @@ export const StudentRegisterModal = ({ isOpen, onClose }) => {
                   value={lastName}
                   onChange={(e) => setLastName(e.target.value)}
                   placeholder="e.g. Lin"
-                  className="w-full px-3 py-2 text-xs border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full px-3 py-2 text-xs border border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-[#070b14] text-slate-100 placeholder:text-slate-500"
                   required
                 />
               </div>
@@ -155,7 +153,7 @@ export const StudentRegisterModal = ({ isOpen, onClose }) => {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 mt-3">
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">
+                <label className="block text-xs font-semibold text-slate-300 mb-1">
                   Institutional Email *
                 </label>
                 <input
@@ -163,12 +161,12 @@ export const StudentRegisterModal = ({ isOpen, onClose }) => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="student.name@unity.edu"
-                  className="w-full px-3 py-2 text-xs border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 font-mono"
+                  className="w-full px-3 py-2 text-xs border border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-[#070b14] text-slate-100 placeholder:text-slate-500 font-mono"
                   required
                 />
               </div>
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">
+                <label className="block text-xs font-semibold text-slate-300 mb-1">
                   Mobile Phone
                 </label>
                 <input
@@ -176,13 +174,13 @@ export const StudentRegisterModal = ({ isOpen, onClose }) => {
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
                   placeholder="+1 (555) 234-5678"
-                  className="w-full px-3 py-2 text-xs border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full px-3 py-2 text-xs border border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-[#070b14] text-slate-100 placeholder:text-slate-500"
                 />
               </div>
             </div>
 
             <div className="mt-3">
-              <label className="block text-xs font-semibold text-slate-700 mb-1">
+              <label className="block text-xs font-semibold text-slate-300 mb-1">
                 Campus Residence / Address
               </label>
               <input
@@ -190,35 +188,35 @@ export const StudentRegisterModal = ({ isOpen, onClose }) => {
                 value={address}
                 onChange={(e) => setAddress(e.target.value)}
                 placeholder="Quad Hall 204 or Boston Street address"
-                className="w-full px-3 py-2 text-xs border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full px-3 py-2 text-xs border border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-[#070b14] text-slate-100 placeholder:text-slate-500"
               />
             </div>
           </div>
 
           {/* Academic Information */}
-          <div className="pt-2 border-t border-slate-100">
-            <h3 className="text-xs font-bold text-slate-900 uppercase tracking-wider mb-2">
+          <div className="pt-3 border-t border-slate-800">
+            <h3 className="text-xs font-bold text-slate-300 uppercase tracking-wider mb-2">
               2. Academic Program
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">
+                <label className="block text-xs font-semibold text-slate-300 mb-1">
                   Department
                 </label>
                 <select
                   value={department}
                   onChange={(e) => setDepartment(e.target.value)}
-                  className="w-full px-3 py-2 text-xs border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white"
+                  className="w-full px-3 py-2 text-xs border border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-[#070b14] text-slate-100"
                 >
                   {DEPARTMENTS.map((dept) => (
-                    <option key={dept} value={dept}>
+                    <option key={dept} value={dept} className="bg-[#070b14] text-slate-100">
                       {dept}
                     </option>
                   ))}
                 </select>
               </div>
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">
+                <label className="block text-xs font-semibold text-slate-300 mb-1">
                   Degree Program
                 </label>
                 <input
@@ -226,62 +224,62 @@ export const StudentRegisterModal = ({ isOpen, onClose }) => {
                   value={program}
                   onChange={(e) => setProgram(e.target.value)}
                   placeholder="e.g. B.Sc. Computer Science"
-                  className="w-full px-3 py-2 text-xs border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full px-3 py-2 text-xs border border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-[#070b14] text-slate-100 placeholder:text-slate-500"
                 />
               </div>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 mt-3">
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">
+                <label className="block text-xs font-semibold text-slate-300 mb-1">
                   Academic Standing
                 </label>
                 <select
                   value={year}
                   onChange={(e) => setYear(e.target.value)}
-                  className="w-full px-3 py-2 text-xs border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white"
+                  className="w-full px-3 py-2 text-xs border border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-[#070b14] text-slate-100"
                 >
                   {YEARS.map((y) => (
-                    <option key={y} value={y}>
+                    <option key={y} value={y} className="bg-[#070b14] text-slate-100">
                       {y}
                     </option>
                   ))}
                 </select>
               </div>
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">
+                <label className="block text-xs font-semibold text-slate-300 mb-1">
                   Cohort
                 </label>
                 <input
                   type="text"
                   value={cohort}
                   onChange={(e) => setCohort(e.target.value)}
-                  className="w-full px-3 py-2 text-xs border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full px-3 py-2 text-xs border border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-[#070b14] text-slate-100"
                 />
               </div>
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">
+                <label className="block text-xs font-semibold text-slate-300 mb-1">
                   Faculty Advisor
                 </label>
                 <input
                   type="text"
                   value={advisor}
                   onChange={(e) => setAdvisor(e.target.value)}
-                  className="w-full px-3 py-2 text-xs border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full px-3 py-2 text-xs border border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-[#070b14] text-slate-100"
                 />
               </div>
             </div>
           </div>
 
           {/* Initial Course Enrollment */}
-          <div className="pt-2 border-t border-slate-100">
-            <h3 className="text-xs font-bold text-slate-900 uppercase tracking-wider mb-1.5">
+          <div className="pt-3 border-t border-slate-800">
+            <h3 className="text-xs font-bold text-slate-300 uppercase tracking-wider mb-1.5">
               3. Initial Course Enrollments
             </h3>
-            <p className="text-[11px] text-slate-500 mb-2">
+            <p className="text-[11px] text-slate-400 mb-2">
               Select the initial active curriculum courses for this student:
             </p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 max-h-36 overflow-y-auto p-1">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 max-h-36 overflow-y-auto p-1 custom-scrollbar">
               {courses.map((course) => {
                 const isSelected = selectedCourseIds.includes(course.id);
                 return (
@@ -289,19 +287,19 @@ export const StudentRegisterModal = ({ isOpen, onClose }) => {
                     type="button"
                     key={course.id}
                     onClick={() => handleCourseToggle(course.id)}
-                    className={`p-2 rounded-lg border text-left text-xs transition-colors flex items-center justify-between cursor-pointer ${
+                    className={`p-2.5 rounded-lg border text-left text-xs transition-colors flex items-center justify-between cursor-pointer ${
                       isSelected
-                        ? 'border-indigo-600 bg-indigo-50/70 text-indigo-950 font-medium'
-                        : 'border-slate-200 hover:bg-slate-50 text-slate-700'
+                        ? 'border-indigo-500 bg-indigo-500/20 text-white font-medium shadow-xs'
+                        : 'border-slate-800 bg-[#070b14] hover:bg-slate-800/60 text-slate-300'
                     }`}
                   >
                     <div className="truncate pr-2">
-                      <span className="font-mono font-bold text-indigo-700 mr-1.5">
+                      <span className="font-mono font-bold text-indigo-400 mr-1.5">
                         {course.code}
                       </span>
                       <span className="truncate">{course.title}</span>
                     </div>
-                    <span className="text-[10px] font-mono shrink-0 text-slate-400">
+                    <span className="text-[10px] font-mono shrink-0 text-slate-400 bg-slate-800 px-1.5 py-0.5 rounded">
                       {course.credits} Cr
                     </span>
                   </button>
@@ -311,56 +309,56 @@ export const StudentRegisterModal = ({ isOpen, onClose }) => {
           </div>
 
           {/* Emergency Contact */}
-          <div className="pt-2 border-t border-slate-100">
-            <h3 className="text-xs font-bold text-slate-900 uppercase tracking-wider mb-2">
+          <div className="pt-3 border-t border-slate-800">
+            <h3 className="text-xs font-bold text-slate-300 uppercase tracking-wider mb-2">
               4. Emergency Contact
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               <div>
-                <label className="block text-xs text-slate-600 mb-1">Contact Name</label>
+                <label className="block text-xs text-slate-400 mb-1">Contact Name</label>
                 <input
                   type="text"
                   value={emName}
                   onChange={(e) => setEmName(e.target.value)}
                   placeholder="e.g. Helen Lin"
-                  className="w-full px-3 py-2 text-xs border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full px-3 py-2 text-xs border border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-[#070b14] text-slate-100 placeholder:text-slate-500"
                 />
               </div>
               <div>
-                <label className="block text-xs text-slate-600 mb-1">Relationship</label>
+                <label className="block text-xs text-slate-400 mb-1">Relationship</label>
                 <input
                   type="text"
                   value={emRel}
                   onChange={(e) => setEmRel(e.target.value)}
                   placeholder="e.g. Mother, Guardian"
-                  className="w-full px-3 py-2 text-xs border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full px-3 py-2 text-xs border border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-[#070b14] text-slate-100 placeholder:text-slate-500"
                 />
               </div>
               <div>
-                <label className="block text-xs text-slate-600 mb-1">Phone</label>
+                <label className="block text-xs text-slate-400 mb-1">Phone</label>
                 <input
                   type="tel"
                   value={emPhone}
                   onChange={(e) => setEmPhone(e.target.value)}
                   placeholder="+1 (555) 999-8877"
-                  className="w-full px-3 py-2 text-xs border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full px-3 py-2 text-xs border border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-[#070b14] text-slate-100 placeholder:text-slate-500"
                 />
               </div>
             </div>
           </div>
 
           {/* Form Actions */}
-          <div className="flex items-center justify-end gap-2.5 pt-3 border-t border-slate-100">
+          <div className="flex items-center justify-end gap-2.5 pt-4 border-t border-slate-800">
             <button
               type="button"
               onClick={onClose}
-              className="px-3.5 py-1.5 text-xs font-medium text-slate-700 bg-slate-100 rounded-lg hover:bg-slate-200 transition-colors cursor-pointer"
+              className="px-4 py-2 text-xs font-medium text-slate-300 bg-slate-800 hover:bg-slate-700 rounded-lg transition-colors cursor-pointer"
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="px-3.5 py-1.5 text-xs font-semibold text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 transition-colors shadow-xs cursor-pointer"
+              className="px-4 py-2 text-xs font-semibold text-white bg-indigo-600 rounded-lg hover:bg-indigo-500 transition-colors shadow-md shadow-indigo-600/30 cursor-pointer"
             >
               Register & Matriculate
             </button>

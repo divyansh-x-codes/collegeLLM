@@ -11,20 +11,20 @@ export const TableDensityToggle = ({ className = '' }) => {
       onClick={() => setIsCompactMode(!isCompactMode)}
       title={isCompactMode ? 'Switch to Standard Table Spacing' : 'Switch to Compact / Smaller Table Spacing'}
       aria-label="Toggle compact table density"
-      className={`inline-flex items-center gap-1.5 px-2.5 py-1 text-[11px] font-medium rounded-lg border transition-all ${
+      className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg border transition-all cursor-pointer shadow-xs ${
         isCompactMode
-          ? 'bg-indigo-50 border-indigo-200 text-indigo-700 hover:bg-indigo-100'
-          : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-50'
+          ? 'bg-indigo-950/70 border-indigo-500/40 text-indigo-300 hover:bg-indigo-900/80 shadow-indigo-950/40'
+          : 'bg-[#0b1329] border-slate-800 text-slate-300 hover:bg-slate-800/80 hover:text-white'
       } ${className}`}
     >
       {isCompactMode ? (
         <>
-          <Minimize2 className="w-3.5 h-3.5 text-indigo-600" />
+          <Minimize2 className="w-3.5 h-3.5 text-indigo-400" />
           <span>Compact Density</span>
         </>
       ) : (
         <>
-          <Maximize2 className="w-3.5 h-3.5 text-slate-500" />
+          <Maximize2 className="w-3.5 h-3.5 text-slate-400" />
           <span>Standard Density</span>
         </>
       )}

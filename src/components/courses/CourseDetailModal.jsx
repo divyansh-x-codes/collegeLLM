@@ -18,29 +18,29 @@ export const CourseDetailModal = ({
   const isFull = enrolledCount >= course.capacity;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-xs overflow-y-auto modal-backdrop-animate">
-      <div className="relative w-full max-w-2xl bg-white rounded-xl shadow-2xl border border-slate-200 overflow-hidden my-8 modal-content-animate">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-md overflow-y-auto modal-backdrop-animate">
+      <div className="relative w-full max-w-2xl bg-[#0f172a] rounded-2xl shadow-2xl border border-slate-700/80 overflow-hidden my-8 modal-content-animate text-slate-100">
         {/* Header */}
-        <div className="p-5 border-b border-slate-200 bg-slate-50">
+        <div className="p-5 border-b border-slate-800 bg-[#0c1427]">
           <div className="flex items-start justify-between gap-4">
             <div>
-              <div className="flex items-center gap-2 text-xs font-mono text-indigo-700 font-semibold mb-1">
+              <div className="flex items-center gap-2 text-xs font-mono text-indigo-400 font-semibold mb-1">
                 <span>{course.code}</span>
                 <span aria-hidden="true">·</span>
                 <span>{course.credits} Credits</span>
                 <span aria-hidden="true">·</span>
                 <span>{course.term}</span>
               </div>
-              <h2 className="text-base font-bold text-slate-900 leading-snug">
+              <h2 className="text-base font-bold text-white leading-snug">
                 {course.title}
               </h2>
-              <div className="text-xs text-slate-500 mt-0.5">
+              <div className="text-xs text-slate-400 mt-0.5">
                 {course.department}
               </div>
             </div>
             <button
               onClick={onClose}
-              className="text-slate-400 hover:text-slate-600 p-1 rounded-md transition-colors cursor-pointer"
+              className="text-slate-400 hover:text-white p-1 rounded-md transition-colors cursor-pointer"
               aria-label="Close dialog"
             >
               <X className="w-4 h-4" />
@@ -52,51 +52,51 @@ export const CourseDetailModal = ({
         <div className="p-5 space-y-4 max-h-[70vh] overflow-y-auto">
           {/* Description */}
           <div>
-            <h3 className="text-xs font-bold text-slate-900 uppercase tracking-wider mb-1.5">
+            <h3 className="text-xs font-bold text-slate-300 uppercase tracking-wider mb-1.5">
               Course Overview & Objectives
             </h3>
-            <p className="text-xs text-slate-700 leading-relaxed">
+            <p className="text-xs text-slate-300 leading-relaxed">
               {course.description}
             </p>
           </div>
 
           {/* Schedule & Faculty */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 p-3.5 bg-slate-50 rounded-lg border border-slate-100">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 p-3.5 bg-[#080d1b] rounded-xl border border-slate-800">
             <div>
-              <div className="flex items-center gap-1.5 text-xs font-semibold text-slate-800 mb-1">
-                <Clock className="w-3.5 h-3.5 text-slate-500" />
+              <div className="flex items-center gap-1.5 text-xs font-semibold text-white mb-1">
+                <Clock className="w-3.5 h-3.5 text-indigo-400" />
                 <span>Class Schedule</span>
               </div>
-              <p className="text-xs text-slate-600">
+              <p className="text-xs text-slate-300">
                 {course.schedule.days.join(', ')} · {course.schedule.time}
               </p>
-              <div className="flex items-center gap-1.5 text-xs text-slate-500 mt-1">
+              <div className="flex items-center gap-1.5 text-xs text-slate-400 mt-1">
                 <MapPin className="w-3.5 h-3.5" />
                 <span>{course.schedule.room}</span>
               </div>
             </div>
 
             <div>
-              <div className="flex items-center gap-1.5 text-xs font-semibold text-slate-800 mb-1">
-                <User className="w-3.5 h-3.5 text-slate-500" />
+              <div className="flex items-center gap-1.5 text-xs font-semibold text-white mb-1">
+                <User className="w-3.5 h-3.5 text-indigo-400" />
                 <span>Faculty Instructor</span>
               </div>
-              <p className="text-xs font-medium text-slate-800">{course.instructor.name}</p>
-              <p className="text-[11px] text-slate-500">{course.instructor.title}</p>
-              <p className="text-[11px] text-indigo-600 mt-0.5 font-mono">{course.instructor.email}</p>
+              <p className="text-xs font-medium text-white">{course.instructor.name}</p>
+              <p className="text-[11px] text-slate-400">{course.instructor.title}</p>
+              <p className="text-[11px] text-indigo-400 mt-0.5 font-mono">{course.instructor.email}</p>
             </div>
           </div>
 
           {/* Prerequisites */}
           <div>
-            <h3 className="text-xs font-bold text-slate-900 uppercase tracking-wider mb-1.5">
+            <h3 className="text-xs font-bold text-slate-300 uppercase tracking-wider mb-1.5">
               Prerequisites
             </h3>
             <div className="flex flex-wrap gap-1.5">
               {course.prerequisites.map((p, idx) => (
                 <span
                   key={idx}
-                  className="text-xs font-mono px-2 py-0.5 bg-slate-100 text-slate-700 rounded-md border border-slate-200"
+                  className="text-xs font-mono px-2 py-0.5 bg-slate-800 text-slate-300 rounded-md border border-slate-700"
                 >
                   {p}
                 </span>
@@ -106,19 +106,19 @@ export const CourseDetailModal = ({
 
           {/* Assessment Weighting */}
           <div>
-            <h3 className="text-xs font-bold text-slate-900 uppercase tracking-wider mb-1.5">
+            <h3 className="text-xs font-bold text-slate-300 uppercase tracking-wider mb-1.5">
               Grading Assessment Structure
             </h3>
             <div className="space-y-1.5">
               {course.assessments.map((asm) => (
                 <div
                   key={asm.id}
-                  className="flex items-center justify-between text-xs p-2 rounded-md bg-white border border-slate-100"
+                  className="flex items-center justify-between text-xs p-2 rounded-lg bg-[#080d1b] border border-slate-800"
                 >
-                  <span className="font-medium text-slate-800">{asm.name}</span>
+                  <span className="font-medium text-slate-200">{asm.name}</span>
                   <div className="flex items-center gap-3">
                     <span className="text-slate-400 font-mono text-[11px]">{asm.category}</span>
-                    <span className="font-mono font-semibold text-slate-900">{asm.weight}%</span>
+                    <span className="font-mono font-semibold text-indigo-300">{asm.weight}%</span>
                   </div>
                 </div>
               ))}
@@ -129,7 +129,7 @@ export const CourseDetailModal = ({
           {(role === 'admin' || role === 'professor') && (
             <div>
               <div className="flex items-center justify-between mb-1.5">
-                <h3 className="text-xs font-bold text-slate-900 uppercase tracking-wider">
+                <h3 className="text-xs font-bold text-slate-300 uppercase tracking-wider">
                   Enrolled Students Roster ({enrolledCount}/{course.capacity})
                 </h3>
               </div>
@@ -143,7 +143,7 @@ export const CourseDetailModal = ({
                     return (
                       <div
                         key={sid}
-                        className="flex items-center gap-2 p-2 rounded-md bg-slate-50 border border-slate-100 text-xs"
+                        className="flex items-center gap-2 p-2 rounded-lg bg-[#080d1b] border border-slate-800 text-xs"
                       >
                         <div
                           className={`w-6 h-6 rounded-full bg-gradient-to-br ${student.avatarBg} text-white flex items-center justify-center font-bold text-[10px] shrink-0`}
@@ -151,7 +151,7 @@ export const CourseDetailModal = ({
                           {student.firstName[0]}
                         </div>
                         <div className="min-w-0 flex-1">
-                          <p className="font-medium text-slate-800 truncate">
+                          <p className="font-medium text-white truncate">
                             {student.firstName} {student.lastName}
                           </p>
                           <p className="text-[10px] text-slate-400 font-mono truncate">
@@ -168,9 +168,9 @@ export const CourseDetailModal = ({
         </div>
 
         {/* Footer actions */}
-        <div className="flex items-center justify-between px-5 py-3 border-t border-slate-200 bg-slate-50">
-          <div className="text-xs text-slate-600">
-            <span className="font-mono font-semibold text-slate-900">{enrolledCount}</span> /{' '}
+        <div className="flex items-center justify-between px-5 py-4 border-t border-slate-800 bg-[#0c1427]">
+          <div className="text-xs text-slate-400">
+            <span className="font-mono font-semibold text-white">{enrolledCount}</span> /{' '}
             <span className="font-mono">{course.capacity}</span> seats filled
           </div>
 
@@ -181,7 +181,7 @@ export const CourseDetailModal = ({
                   onClose();
                   onEdit(course);
                 }}
-                className="px-3.5 py-1.5 text-xs font-semibold text-slate-700 bg-white border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors cursor-pointer"
+                className="px-3.5 py-1.5 text-xs font-semibold text-slate-200 bg-slate-800 border border-slate-700 rounded-lg hover:bg-slate-700 transition-colors cursor-pointer"
               >
                 Edit Course
               </button>
@@ -193,10 +193,10 @@ export const CourseDetailModal = ({
                 disabled={!isEnrolled && isFull}
                 className={`flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-semibold rounded-lg transition-colors cursor-pointer ${
                   isEnrolled
-                    ? 'bg-rose-50 text-rose-700 border border-rose-200 hover:bg-rose-100'
+                    ? 'bg-rose-950/80 text-rose-300 border border-rose-800 hover:bg-rose-900/80'
                     : isFull
-                    ? 'bg-slate-200 text-slate-400 cursor-not-allowed'
-                    : 'bg-indigo-600 text-white hover:bg-indigo-700'
+                    ? 'bg-slate-800 text-slate-500 cursor-not-allowed border border-slate-700'
+                    : 'bg-indigo-600 text-white hover:bg-indigo-500 shadow-md'
                 }`}
               >
                 {isEnrolled ? (
@@ -220,7 +220,7 @@ export const CourseDetailModal = ({
 
             <button
               onClick={onClose}
-              className="px-3.5 py-1.5 text-xs font-medium text-slate-700 bg-slate-200 rounded-lg hover:bg-slate-300 transition-colors cursor-pointer"
+              className="px-3.5 py-1.5 text-xs font-medium text-slate-300 bg-slate-800 border border-slate-700 rounded-lg hover:bg-slate-700 transition-colors cursor-pointer"
             >
               Close
             </button>

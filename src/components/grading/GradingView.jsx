@@ -227,75 +227,75 @@ export const GradingView = () => {
         onMouseMove={() => {
           if (!isSidebarCollapsed) setIsSidebarCollapsed(true);
         }}
-        className="p-5 max-w-7xl mx-auto space-y-5"
+        className="p-6 sm:p-7 lg:p-8 max-w-[1720px] mx-auto space-y-6 text-slate-100 font-sans antialiased"
       >
         {/* Top Controls Banner */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pb-3 border-b border-slate-200">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-4 border-b border-slate-800">
           <div>
-            <div className="flex items-center gap-2 text-xs font-mono text-slate-500 mb-0.5">
-              <span className="font-bold text-indigo-700">Unity College</span>
+            <div className="flex items-center gap-2 text-xs font-mono text-slate-400 mb-1">
+              <span className="font-bold text-indigo-400">Unity College</span>
               <span aria-hidden="true">·</span>
               <span>Office of the Registrar</span>
               <span aria-hidden="true">·</span>
               <span>Fall Term 2026</span>
             </div>
-            <h1 className="text-lg font-bold text-slate-900 tracking-tight flex items-center gap-2">
-              <Award className="w-4 h-4 text-indigo-600" />
+            <h1 className="text-xl sm:text-2xl font-bold text-white tracking-tight flex items-center gap-2.5">
+              <Award className="w-5 h-5 text-indigo-400" />
               <span>Official Academic Grade Report & Transcript</span>
             </h1>
-            <p className="text-xs text-slate-500">
+            <p className="text-xs text-slate-400 mt-1">
               Verified term evaluation matrix, assessment breakdown, and cumulative GPA
             </p>
           </div>
 
-          <div className="flex flex-wrap items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2.5">
             <TableDensityToggle />
             <button
               onClick={() => window.print()}
-              className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-slate-700 bg-white border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors shadow-2xs"
+              className="flex items-center gap-2 px-3.5 py-2 text-xs font-semibold text-slate-200 bg-[#0c1427] hover:bg-slate-800 border border-slate-800 hover:border-slate-700 rounded-xl transition-colors shadow-sm cursor-pointer"
             >
-              <Printer className="w-3.5 h-3.5 text-slate-500" />
+              <Printer className="w-4 h-4 text-slate-400" />
               <span>Print</span>
             </button>
             <button
               onClick={handleExportStudentCSV}
-              className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg transition-colors shadow-2xs"
+              className="flex items-center gap-2 px-3.5 py-2 text-xs font-semibold text-white bg-indigo-600 hover:bg-indigo-500 rounded-xl transition-all shadow-md shadow-indigo-600/30 cursor-pointer"
             >
-              <Download className="w-3.5 h-3.5 text-white" />
+              <Download className="w-4 h-4 text-white" />
               <span>Export CSV</span>
             </button>
           </div>
         </div>
 
-        {/* Student Profile Summary */}
-        <div className="bg-white p-4 rounded-xl border border-indigo-200/80 shadow-2xs flex flex-col md:flex-row md:items-center justify-between gap-4 bg-gradient-to-r from-indigo-50/40 via-white to-white">
-          <div className="flex items-center gap-3.5">
+        {/* Student Profile Summary Box */}
+        <div className="bg-[#0c1427] p-5 sm:p-6 rounded-2xl border border-slate-800/90 shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-5 relative overflow-hidden backdrop-blur-xl">
+          <div className="flex items-center gap-4">
             {currentStudent.avatarUrl ? (
               <img
                 src={currentStudent.avatarUrl}
                 alt={currentStudent.firstName}
-                className="w-12 h-12 rounded-full object-cover border-2 border-indigo-400 shadow-2xs shrink-0"
+                className="w-14 h-14 rounded-2xl object-cover ring-2 ring-indigo-500/50 shadow-md shrink-0"
               />
             ) : (
               <div
-                className={`w-12 h-12 rounded-full bg-gradient-to-br ${currentStudent.avatarBg || 'from-indigo-600 to-indigo-800'} text-white flex items-center justify-center font-bold text-lg shadow-2xs shrink-0`}
+                className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${currentStudent.avatarBg || 'from-indigo-600 to-indigo-800'} text-white flex items-center justify-center font-bold text-xl shadow-md shrink-0`}
               >
                 {currentStudent.firstName ? currentStudent.firstName[0] : 'S'}
               </div>
             )}
             <div>
-              <div className="flex items-center gap-2 flex-wrap">
-                <h2 className="text-base font-bold text-slate-900">
+              <div className="flex items-center gap-2.5 flex-wrap">
+                <h2 className="text-lg font-bold text-white tracking-tight">
                   {currentStudent.firstName} {currentStudent.lastName}
                 </h2>
-                <span className="font-mono text-xs text-indigo-700 font-bold px-2 py-0.5 bg-indigo-100 rounded">
+                <span className="font-mono text-xs text-indigo-300 font-bold px-2.5 py-0.5 bg-indigo-950/80 rounded-full border border-indigo-500/30">
                   {currentStudent.studentId}
                 </span>
-                <span className="text-xs text-slate-500 font-mono">
+                <span className="text-xs text-slate-400 font-mono">
                   {currentStudent.year} · {currentStudent.cohort}
                 </span>
               </div>
-              <p className="text-xs text-slate-600 mt-0.5">
+              <p className="text-xs text-slate-300 mt-1">
                 {currentStudent.program} · {currentStudent.department}
               </p>
               <div className="text-[11px] text-slate-400 font-mono mt-0.5">
@@ -304,172 +304,172 @@ export const GradingView = () => {
             </div>
           </div>
 
-          <div className="flex items-center gap-3 bg-slate-50 p-2.5 rounded-lg border border-slate-200 self-start md:self-auto">
+          <div className="flex items-center gap-4 bg-[#080d1b] p-3 rounded-xl border border-slate-800 self-start md:self-auto">
             <div className="text-center px-2">
               <div className="text-[10px] uppercase font-semibold text-slate-400 font-mono">GPA</div>
-              <div className="text-lg font-bold font-mono text-indigo-700">{(currentStudent.gpa || 3.8).toFixed(2)}</div>
+              <div className="text-xl font-black font-mono text-indigo-400">{(currentStudent.gpa || 3.8).toFixed(2)}</div>
             </div>
-            <div className="w-px h-7 bg-slate-200" />
+            <div className="w-px h-8 bg-slate-800" />
             <div className="text-center px-2">
               <div className="text-[10px] uppercase font-semibold text-slate-400 font-mono">Credits</div>
-              <div className="text-lg font-bold font-mono text-slate-800">{totalStudentCredits}</div>
+              <div className="text-xl font-black font-mono text-white">{totalStudentCredits}</div>
             </div>
-            <div className="w-px h-7 bg-slate-200" />
+            <div className="w-px h-8 bg-slate-800" />
             <div className="text-center px-2">
               <div className="text-[10px] uppercase font-semibold text-slate-400 font-mono">Standing</div>
-              <div className="text-xs font-bold text-emerald-700 mt-0.5">
+              <div className="text-xs font-bold text-emerald-400 mt-0.5">
                 {(currentStudent.gpa || 3.8) >= 3.8 ? "Dean's List" : 'Good Standing'}
               </div>
             </div>
           </div>
         </div>
 
-        {/* Compact Metrics Row */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-          <div className="p-3 bg-white rounded-lg border border-slate-200 shadow-2xs">
-            <span className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider">
+        {/* 4 Compact Metrics Box Row */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
+          <div className="p-5 bg-[#0c1427] rounded-2xl border border-slate-800/90 shadow-xl flex flex-col justify-between min-h-[115px]">
+            <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">
               Cumulative GPA
             </span>
-            <div className="text-xl font-bold font-mono text-slate-900 mt-0.5">
+            <div className="text-2xl font-black font-mono text-white mt-1">
               {(currentStudent.gpa || 3.8).toFixed(2)} / 4.00
             </div>
-            <div className="text-[11px] text-emerald-600 font-semibold mt-0.5 flex items-center gap-1">
-              <CheckCircle2 className="w-3 h-3" />
+            <div className="text-xs text-emerald-400 font-semibold mt-1 flex items-center gap-1.5">
+              <CheckCircle2 className="w-3.5 h-3.5" />
               <span>{(currentStudent.gpa || 3.8) >= 3.8 ? 'First Class Honors' : 'Degree Eligible'}</span>
             </div>
           </div>
 
-          <div className="p-3 bg-white rounded-lg border border-slate-200 shadow-2xs">
-            <span className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider">
+          <div className="p-5 bg-[#0c1427] rounded-2xl border border-slate-800/90 shadow-xl flex flex-col justify-between min-h-[115px]">
+            <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">
               Registered Credits
             </span>
-            <div className="text-xl font-bold font-mono text-slate-900 mt-0.5">
+            <div className="text-2xl font-black font-mono text-white mt-1">
               {totalStudentCredits} Cr
             </div>
-            <div className="text-[11px] text-slate-500 mt-0.5 font-mono">Full-time load</div>
+            <div className="text-xs text-slate-400 mt-1 font-mono">Full-time load</div>
           </div>
 
-          <div className="p-3 bg-white rounded-lg border border-slate-200 shadow-2xs">
-            <span className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider">
+          <div className="p-5 bg-[#0c1427] rounded-2xl border border-slate-800/90 shadow-xl flex flex-col justify-between min-h-[115px]">
+            <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">
               Active Courses
             </span>
-            <div className="text-xl font-bold font-mono text-indigo-700 mt-0.5">
+            <div className="text-2xl font-black font-mono text-indigo-400 mt-1">
               {studentEnrolledCourses.length} Subjects
             </div>
-            <div className="text-[11px] text-slate-500 mt-0.5 font-mono">Fall 2026 Term</div>
+            <div className="text-xs text-slate-400 mt-1 font-mono">Fall 2026 Term</div>
           </div>
 
-          <div className="p-3 bg-white rounded-lg border border-slate-200 shadow-2xs">
-            <span className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider">
+          <div className="p-5 bg-[#0c1427] rounded-2xl border border-slate-800/90 shadow-xl flex flex-col justify-between min-h-[115px]">
+            <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">
               Matriculation
             </span>
-            <div className="text-sm font-bold text-slate-900 mt-1 flex items-center gap-1.5">
-              <span className="w-2 h-2 rounded-full bg-emerald-500" />
+            <div className="text-sm font-bold text-white mt-1.5 flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
               <span>Active Enrolled</span>
             </div>
-            <div className="text-[11px] text-slate-500 mt-0.5 font-mono">Class of {currentStudent.cohort || '2027'}</div>
+            <div className="text-xs text-slate-400 mt-1 font-mono">Class of {currentStudent.cohort || '2028'}</div>
           </div>
         </div>
 
-        {/* Enrolled Courses Grade Table - COMPACT & CLEAN */}
-        <div className="bg-white rounded-xl border border-slate-200 shadow-2xs overflow-hidden">
-          <div className="px-3.5 py-2.5 border-b border-slate-200 flex items-center justify-between bg-slate-50/70">
+        {/* Enrolled Courses Grade Table - DARK, CRISP & ALIGNED */}
+        <div className="bg-[#0c1427] rounded-2xl border border-slate-800/90 shadow-xl overflow-hidden">
+          <div className="px-5 py-3.5 border-b border-slate-800 flex items-center justify-between bg-[#091122]">
             <div>
-              <h3 className="text-xs font-bold text-slate-900">Term Course Evaluations</h3>
-              <p className="text-[11px] text-slate-500">
+              <h3 className="text-sm font-bold text-white tracking-tight">Term Course Evaluations</h3>
+              <p className="text-xs text-slate-400 mt-0.5">
                 Official marks recorded for {currentStudent.firstName} {currentStudent.lastName}
               </p>
             </div>
-            <span className="text-[11px] font-mono text-slate-600 bg-white px-2 py-0.5 rounded border border-slate-200">
+            <span className="text-xs font-mono text-slate-400 bg-slate-900 px-2.5 py-1 rounded-lg border border-slate-800">
               {studentGradeRecords.length} courses
             </span>
           </div>
 
           <div className="overflow-x-auto">
             <table className={`w-full text-left text-xs ${isCompactMode ? 'compact-table' : ''}`}>
-              <thead className="bg-slate-50/80 border-b border-slate-200 text-slate-500 font-semibold uppercase text-[10px] tracking-wider">
+              <thead className="bg-[#091122]/70 border-b border-slate-800 text-slate-400 font-semibold uppercase text-[10px] tracking-wider font-mono">
                 <tr>
-                  <th className={`${isCompactMode ? 'py-1.5 px-3' : 'py-2 px-3.5'}`}>Course</th>
-                  <th className={`${isCompactMode ? 'py-1.5 px-3' : 'py-2 px-3.5'}`}>Credits</th>
-                  <th className={`${isCompactMode ? 'py-1.5 px-3' : 'py-2 px-3.5'}`}>Instructor</th>
-                  <th className={`${isCompactMode ? 'py-1.5 px-3' : 'py-2 px-3.5'}`}>Assessments Breakdown</th>
-                  <th className={`${isCompactMode ? 'py-1.5 px-3' : 'py-2 px-3.5'}`}>Weighted %</th>
-                  <th className={`${isCompactMode ? 'py-1.5 px-3' : 'py-2 px-3.5'}`}>Grade</th>
-                  <th className={`${isCompactMode ? 'py-1.5 px-3' : 'py-2 px-3.5'}`}>GPA Pt</th>
-                  <th className={`${isCompactMode ? 'py-1.5 px-3' : 'py-2 px-3.5'} text-right`}>Transcript</th>
+                  <th className="py-3 px-4">Course</th>
+                  <th className="py-3 px-4">Credits</th>
+                  <th className="py-3 px-4">Instructor</th>
+                  <th className="py-3 px-4">Assessments Breakdown</th>
+                  <th className="py-3 px-4">Weighted %</th>
+                  <th className="py-3 px-4">Grade</th>
+                  <th className="py-3 px-4">GPA Pt</th>
+                  <th className="py-3 px-4 text-right">Transcript</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100">
+              <tbody className="divide-y divide-slate-800/60">
                 {studentGradeRecords.length === 0 ? (
                   <tr>
-                    <td colSpan={8} className="py-6 text-center text-slate-400 italic">
+                    <td colSpan={8} className="py-8 text-center text-slate-500 italic">
                       No course grade records found for this student.
                     </td>
                   </tr>
                 ) : (
                   studentGradeRecords.map(({ course, record }) => (
-                    <tr key={course.id} className="hover:bg-slate-50/80 transition-colors">
-                      <td className={`${isCompactMode ? 'py-1.5 px-3' : 'py-2.5 px-3.5'}`}>
-                        <div className="font-mono font-bold text-indigo-700">{course.code}</div>
-                        <div className="font-medium text-slate-900 truncate max-w-xs">{course.title}</div>
+                    <tr key={course.id} className="hover:bg-slate-900/60 transition-colors">
+                      <td className="py-3.5 px-4">
+                        <div className="font-mono font-bold text-indigo-400">{course.code}</div>
+                        <div className="font-medium text-white truncate max-w-xs">{course.title}</div>
                       </td>
 
-                      <td className={`${isCompactMode ? 'py-1.5 px-3' : 'py-2.5 px-3.5'} font-mono font-medium text-slate-700`}>
+                      <td className="py-3.5 px-4 font-mono font-medium text-slate-300">
                         {course.credits} Cr
                       </td>
 
-                      <td className={`${isCompactMode ? 'py-1.5 px-3' : 'py-2.5 px-3.5'}`}>
-                        <div className="text-slate-800 font-medium">{course.instructor?.name || 'Faculty'}</div>
-                        <div className="text-[10px] text-slate-400 font-mono">{course.instructor?.email}</div>
+                      <td className="py-3.5 px-4">
+                        <div className="text-slate-200 font-medium">{course.instructor?.name || 'Faculty'}</div>
+                        <div className="text-[11px] text-slate-400 font-mono">{course.instructor?.email}</div>
                       </td>
 
-                      <td className={`${isCompactMode ? 'py-1.5 px-3' : 'py-2.5 px-3.5'}`}>
-                        <div className="flex flex-wrap items-center gap-1 max-w-xs">
+                      <td className="py-3.5 px-4">
+                        <div className="flex flex-wrap items-center gap-1.5 max-w-xs">
                           {course.assessments?.map((asm) => {
                             const score = record.scores[asm.id] ?? 90;
                             return (
                               <span
                                 key={asm.id}
-                                className="inline-flex items-center gap-1 text-[10px] bg-slate-100 text-slate-700 px-1 py-0.5 rounded font-mono border border-slate-200"
+                                className="inline-flex items-center gap-1 text-[10px] bg-slate-900 text-slate-300 px-2 py-0.5 rounded font-mono border border-slate-800"
                                 title={`${asm.name} (${asm.weight}% weight)`}
                               >
                                 <span>{asm.name.slice(0, 4)}:</span>
-                                <strong className="text-indigo-700">{score}%</strong>
+                                <strong className="text-indigo-400">{score}%</strong>
                               </span>
                             );
                           })}
                         </div>
                       </td>
 
-                      <td className={`${isCompactMode ? 'py-1.5 px-3' : 'py-2.5 px-3.5'} font-mono text-xs font-bold text-slate-900`}>
+                      <td className="py-3.5 px-4 font-mono text-sm font-bold text-white">
                         {record.weightedPercentage}%
                       </td>
 
-                      <td className={`${isCompactMode ? 'py-1.5 px-3' : 'py-2.5 px-3.5'}`}>
-                        <span className={`inline-flex items-center px-2 py-0.5 rounded font-mono font-bold text-xs ${
+                      <td className="py-3.5 px-4">
+                        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-md font-mono font-bold text-xs ${
                           record.letterGrade.startsWith('A')
-                            ? 'bg-emerald-100 text-emerald-800 border border-emerald-200'
+                            ? 'bg-emerald-950/80 text-emerald-400 border border-emerald-800/70'
                             : record.letterGrade.startsWith('B')
-                            ? 'bg-indigo-100 text-indigo-800 border border-indigo-200'
+                            ? 'bg-blue-950/80 text-blue-400 border border-blue-800/70'
                             : record.letterGrade.startsWith('C')
-                            ? 'bg-amber-100 text-amber-800 border border-amber-200'
-                            : 'bg-rose-100 text-rose-800 border border-rose-200'
+                            ? 'bg-amber-950/80 text-amber-400 border border-amber-800/70'
+                            : 'bg-rose-950/80 text-rose-400 border border-rose-800/70'
                         }`}>
                           {record.letterGrade}
                         </span>
                       </td>
 
-                      <td className={`${isCompactMode ? 'py-1.5 px-3' : 'py-2.5 px-3.5'} font-mono font-bold text-slate-800`}>
+                      <td className="py-3.5 px-4 font-mono font-bold text-slate-200">
                         {record.gpaPoint.toFixed(1)}
                       </td>
 
-                      <td className={`${isCompactMode ? 'py-1.5 px-3' : 'py-2.5 px-3.5'} text-right`}>
+                      <td className="py-3.5 px-4 text-right">
                         <button
                           onClick={() => openTranscript(currentStudent, record, course)}
-                          className="inline-flex items-center gap-1 px-2.5 py-1 text-[11px] font-semibold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 rounded-md transition-colors"
+                          className="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-semibold text-indigo-300 bg-indigo-950/70 hover:bg-indigo-900/70 border border-indigo-700/60 hover:border-indigo-500 rounded-lg transition-colors cursor-pointer"
                         >
                           <span>Transcript</span>
-                          <ExternalLink className="w-3 h-3" />
+                          <ExternalLink className="w-3.5 h-3.5" />
                         </button>
                       </td>
                     </tr>
@@ -512,22 +512,22 @@ export const GradingView = () => {
       onMouseMove={() => {
         if (!isSidebarCollapsed) setIsSidebarCollapsed(true);
       }}
-      className="p-5 max-w-7xl mx-auto space-y-4"
+      className="p-5 max-w-7xl mx-auto space-y-4 text-slate-100"
     >
       {/* Top Controls Banner */}
-      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3 pb-3 border-b border-slate-200">
+      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3 pb-3 border-b border-slate-800">
         <div>
-          <div className="flex items-center gap-2 text-xs font-mono text-slate-500 mb-0.5">
-            <span className="font-bold text-indigo-700">{currentCourse.code}</span>
+          <div className="flex items-center gap-2 text-xs font-mono text-slate-400 mb-0.5">
+            <span className="font-bold text-indigo-400">{currentCourse.code}</span>
             <span aria-hidden="true">·</span>
             <span>{currentCourse.term}</span>
             <span aria-hidden="true">·</span>
             <span>{currentCourse.credits} Credits</span>
           </div>
-          <h1 className="text-lg font-bold text-slate-900 tracking-tight">
+          <h1 className="text-lg font-bold text-white tracking-tight">
             Academic Gradebook & Evaluation Matrix
           </h1>
-          <p className="text-xs text-slate-500">
+          <p className="text-xs text-slate-400">
             Real-time weighted score computation, rubrics distribution, and official transcripts
           </p>
         </div>
@@ -537,10 +537,10 @@ export const GradingView = () => {
           <select
             value={currentCourse.id}
             onChange={(e) => setSelectedCourseId(e.target.value)}
-            className="px-2.5 py-1.5 text-xs font-semibold border border-slate-200 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 text-slate-800 shadow-2xs"
+            className="px-2.5 py-1.5 text-xs font-semibold border border-slate-700/80 rounded-lg bg-[#080d1b] focus:outline-none focus:ring-2 focus:ring-indigo-500 text-white shadow-xs"
           >
             {courses.map((c) => (
-              <option key={c.id} value={c.id}>
+              <option key={c.id} value={c.id} className="bg-[#0f172a] text-white">
                 {c.code}: {c.title}
               </option>
             ))}
@@ -550,16 +550,16 @@ export const GradingView = () => {
 
           <button
             onClick={handleExportCSV}
-            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-slate-700 bg-white border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors shadow-2xs"
+            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-slate-200 bg-slate-800 border border-slate-700 rounded-lg hover:bg-slate-700 transition-colors shadow-xs"
           >
-            <Download className="w-3.5 h-3.5 text-slate-500" />
+            <Download className="w-3.5 h-3.5 text-slate-400" />
             <span>Export CSV</span>
           </button>
 
           {statistics.isAllPublished ? (
             <button
               onClick={() => unpublishGrades(currentCourse.id)}
-              className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-amber-800 bg-amber-50 border border-amber-200 rounded-lg hover:bg-amber-100 transition-colors shadow-2xs"
+              className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-amber-300 bg-amber-950/80 border border-amber-800/80 rounded-lg hover:bg-amber-900/80 transition-colors shadow-xs"
             >
               <RotateCcw className="w-3.5 h-3.5" />
               <span>Revert to Draft</span>
@@ -567,7 +567,7 @@ export const GradingView = () => {
           ) : (
             <button
               onClick={() => publishGrades(currentCourse.id)}
-              className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 transition-colors shadow-2xs"
+              className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-white bg-indigo-600 rounded-lg hover:bg-indigo-500 transition-colors shadow-md"
             >
               <Send className="w-3.5 h-3.5" />
               <span>Publish Term Grades</span>
@@ -577,21 +577,21 @@ export const GradingView = () => {
       </div>
 
       {/* Assessment Weights Summary Bar */}
-      <div className="bg-white p-3 rounded-xl border border-slate-200 shadow-2xs space-y-2">
+      <div className="bg-[#0c1427] p-3 rounded-xl border border-slate-800 shadow-xl space-y-2">
         <div className="flex items-center justify-between text-xs">
-          <span className="font-bold text-slate-900">Grading Rubric Component Weights</span>
+          <span className="font-bold text-white">Grading Rubric Component Weights</span>
           <span className="text-slate-400 font-mono text-[11px]">Total: 100%</span>
         </div>
         <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
           {currentCourse.assessments?.map((asm) => (
             <div
               key={asm.id}
-              className="p-2 rounded-lg bg-slate-50 border border-slate-100 flex flex-col justify-between"
+              className="p-2 rounded-lg bg-[#080d1b] border border-slate-800 flex flex-col justify-between"
             >
-              <span className="text-[11px] font-medium text-slate-600 truncate">{asm.name}</span>
+              <span className="text-[11px] font-medium text-slate-300 truncate">{asm.name}</span>
               <div className="flex items-baseline justify-between mt-1">
                 <span className="text-[10px] text-slate-400 font-mono">{asm.category}</span>
-                <span className="text-xs font-bold font-mono text-indigo-700">{asm.weight}%</span>
+                <span className="text-xs font-bold font-mono text-indigo-400">{asm.weight}%</span>
               </div>
             </div>
           ))}
@@ -602,50 +602,50 @@ export const GradingView = () => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-3">
         {/* Metric Cards */}
         <div className="lg:col-span-2 grid grid-cols-2 sm:grid-cols-4 gap-2.5">
-          <div className="p-3 bg-white rounded-lg border border-slate-200 shadow-2xs">
+          <div className="p-3 bg-[#0c1427] rounded-xl border border-slate-800 shadow-md">
             <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">
               Class Average
             </span>
-            <div className="text-xl font-bold font-mono text-slate-900 mt-0.5">
+            <div className="text-xl font-bold font-mono text-white mt-0.5">
               {statistics.avg}%
             </div>
-            <div className="text-[10px] text-slate-500 font-mono">Mean score</div>
+            <div className="text-[10px] text-slate-400 font-mono">Mean score</div>
           </div>
 
-          <div className="p-3 bg-white rounded-lg border border-slate-200 shadow-2xs">
+          <div className="p-3 bg-[#0c1427] rounded-xl border border-slate-800 shadow-md">
             <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">
               Median Score
             </span>
-            <div className="text-xl font-bold font-mono text-slate-900 mt-0.5">
+            <div className="text-xl font-bold font-mono text-white mt-0.5">
               {statistics.median}%
             </div>
-            <div className="text-[10px] text-slate-500 font-mono">50th percentile</div>
+            <div className="text-[10px] text-slate-400 font-mono">50th percentile</div>
           </div>
 
-          <div className="p-3 bg-white rounded-lg border border-slate-200 shadow-2xs">
-            <span className="text-[10px] font-semibold text-emerald-700 uppercase tracking-wider">
+          <div className="p-3 bg-[#0c1427] rounded-xl border border-slate-800 shadow-md">
+            <span className="text-[10px] font-semibold text-emerald-400 uppercase tracking-wider">
               Highest Score
             </span>
-            <div className="text-xl font-bold font-mono text-emerald-700 mt-0.5">
+            <div className="text-xl font-bold font-mono text-emerald-400 mt-0.5">
               {statistics.highest}%
             </div>
-            <div className="text-[10px] text-emerald-600/80 font-mono">Top cohort mark</div>
+            <div className="text-[10px] text-emerald-400/80 font-mono">Top cohort mark</div>
           </div>
 
-          <div className="p-3 bg-white rounded-lg border border-slate-200 shadow-2xs">
-            <span className="text-[10px] font-semibold text-rose-700 uppercase tracking-wider">
+          <div className="p-3 bg-[#0c1427] rounded-xl border border-slate-800 shadow-md">
+            <span className="text-[10px] font-semibold text-rose-400 uppercase tracking-wider">
               Lowest Score
             </span>
-            <div className="text-xl font-bold font-mono text-rose-700 mt-0.5">
+            <div className="text-xl font-bold font-mono text-rose-400 mt-0.5">
               {statistics.lowest}%
             </div>
-            <div className="text-[10px] text-rose-600/80 font-mono">Needs support</div>
+            <div className="text-[10px] text-rose-400/80 font-mono">Needs support</div>
           </div>
         </div>
 
         {/* Distribution Histogram */}
-        <div className="p-3 bg-white rounded-lg border border-slate-200 shadow-2xs flex flex-col justify-between">
-          <div className="flex items-center justify-between text-xs font-bold text-slate-900 mb-1">
+        <div className="p-3 bg-[#0c1427] rounded-xl border border-slate-800 shadow-md flex flex-col justify-between">
+          <div className="flex items-center justify-between text-xs font-bold text-white mb-1">
             <span>Grade Distribution</span>
             <span className="text-[10px] text-slate-400 font-normal">
               {courseGrades.length} Students
@@ -660,12 +660,12 @@ export const GradingView = () => {
 
               return (
                 <div key={letter} className="flex-1 flex flex-col items-center gap-0.5">
-                  <span className="text-[10px] font-mono font-medium text-slate-500">{count}</span>
-                  <div className="w-full bg-slate-100 rounded-t overflow-hidden flex items-end h-10">
+                  <span className="text-[10px] font-mono font-medium text-slate-400">{count}</span>
+                  <div className="w-full bg-slate-800/80 rounded-t overflow-hidden flex items-end h-10">
                     <div
                       className={`w-full transition-all ${
                         letter === 'A'
-                          ? 'bg-indigo-600'
+                          ? 'bg-indigo-500'
                           : letter === 'B'
                           ? 'bg-blue-500'
                           : letter === 'C'
@@ -677,7 +677,7 @@ export const GradingView = () => {
                       style={{ height: `${barHeight}%` }}
                     />
                   </div>
-                  <span className="text-[11px] font-bold font-mono text-slate-700">{letter}</span>
+                  <span className="text-[11px] font-bold font-mono text-slate-300">{letter}</span>
                 </div>
               );
             })}
@@ -686,7 +686,7 @@ export const GradingView = () => {
       </div>
 
       {/* Search Bar */}
-      <div className="bg-white p-2.5 rounded-xl border border-slate-200 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2">
+      <div className="bg-[#0c1427] p-2.5 rounded-xl border border-slate-800 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2 shadow-md">
         <div className="relative flex-1 max-w-sm">
           <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-2.5" />
           <input
@@ -694,20 +694,20 @@ export const GradingView = () => {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search student roster..."
-            className="w-full pl-8 pr-3 py-1 text-xs border border-slate-200 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-slate-50 focus:bg-white"
+            className="w-full pl-8 pr-3 py-1 text-xs border border-slate-700/80 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-[#080d1b] text-white placeholder-slate-500"
           />
         </div>
 
-        <div className="text-[11px] text-slate-500 italic">
+        <div className="text-[11px] text-slate-400 italic">
           Edit any cell directly to recalculate weighted totals in real-time.
         </div>
       </div>
 
       {/* Interactive Gradebook Matrix Table - Compact & Clean */}
-      <div className="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-2xs">
+      <div className="bg-[#0c1427] rounded-xl border border-slate-800 overflow-hidden shadow-xl">
         <div className="overflow-x-auto">
           <table className={`w-full text-left text-xs ${isCompactMode ? 'compact-table' : ''}`}>
-            <thead className="bg-slate-50 border-b border-slate-200 text-slate-600 font-semibold text-[11px]">
+            <thead className="bg-[#080d1b] border-b border-slate-800 text-slate-400 font-semibold text-[11px]">
               <tr>
                 <th className={`${isCompactMode ? 'py-1.5 px-3' : 'py-2 px-3'}`}>Student</th>
                 <th className={`${isCompactMode ? 'py-1.5 px-3' : 'py-2 px-3'}`}>Student ID</th>
@@ -719,14 +719,14 @@ export const GradingView = () => {
                     </div>
                   </th>
                 ))}
-                <th className={`${isCompactMode ? 'py-1.5 px-3' : 'py-2 px-3'} text-center font-bold text-slate-900`}>Total %</th>
-                <th className={`${isCompactMode ? 'py-1.5 px-3' : 'py-2 px-3'} text-center font-bold text-slate-900`}>Grade</th>
-                <th className={`${isCompactMode ? 'py-1.5 px-3' : 'py-2 px-3'} text-center font-bold text-slate-900`}>GPA</th>
+                <th className={`${isCompactMode ? 'py-1.5 px-3' : 'py-2 px-3'} text-center font-bold text-white`}>Total %</th>
+                <th className={`${isCompactMode ? 'py-1.5 px-3' : 'py-2 px-3'} text-center font-bold text-white`}>Grade</th>
+                <th className={`${isCompactMode ? 'py-1.5 px-3' : 'py-2 px-3'} text-center font-bold text-white`}>GPA</th>
                 <th className={`${isCompactMode ? 'py-1.5 px-3' : 'py-2 px-3'} text-center`}>Status</th>
                 <th className={`${isCompactMode ? 'py-1.5 px-3' : 'py-2 px-3'} text-right`}>Transcript</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100">
+            <tbody className="divide-y divide-slate-800/80 text-slate-200">
               {filteredGrades.length === 0 ? (
                 <tr>
                   <td
@@ -738,15 +738,15 @@ export const GradingView = () => {
                 </tr>
               ) : (
                 filteredGrades.map(({ student, record }) => (
-                  <tr key={student.id} className="hover:bg-slate-50/70 transition-colors">
+                  <tr key={student.id} className="hover:bg-slate-900/60 transition-colors">
                     <td className={`${isCompactMode ? 'py-1 px-3' : 'py-2 px-3'}`}>
-                      <div className="font-semibold text-slate-900">
+                      <div className="font-semibold text-white">
                         {student.firstName} {student.lastName}
                       </div>
                       <div className="text-[10px] text-slate-400">{student.program}</div>
                     </td>
 
-                    <td className={`${isCompactMode ? 'py-1 px-3' : 'py-2 px-3'} font-mono font-medium text-slate-700 text-[11px]`}>
+                    <td className={`${isCompactMode ? 'py-1 px-3' : 'py-2 px-3'} font-mono font-medium text-slate-300 text-[11px]`}>
                       {student.studentId}
                     </td>
 
@@ -763,7 +763,7 @@ export const GradingView = () => {
                             onChange={(e) =>
                               handleScoreChange(record.id, asm.id, e.target.value, asm.maxScore)
                             }
-                            className={`w-14 text-center font-mono font-semibold rounded border border-slate-200 bg-white focus:bg-indigo-50/30 focus:border-indigo-500 focus:outline-none transition-colors ${
+                            className={`w-14 text-center font-mono font-semibold rounded border border-slate-700/80 bg-[#080d1b] text-white focus:bg-slate-900 focus:border-indigo-500 focus:outline-none transition-colors ${
                               isCompactMode ? 'py-0.5 text-xs' : 'py-1 text-xs'
                             }`}
                           />
@@ -771,7 +771,7 @@ export const GradingView = () => {
                       );
                     })}
 
-                    <td className={`${isCompactMode ? 'py-1 px-3' : 'py-2 px-3'} text-center font-mono font-bold text-slate-900`}>
+                    <td className={`${isCompactMode ? 'py-1 px-3' : 'py-2 px-3'} text-center font-mono font-bold text-white`}>
                       {record.weightedPercentage}%
                     </td>
 
@@ -779,21 +779,21 @@ export const GradingView = () => {
                       <span
                         className={`font-mono font-bold px-1.5 py-0.5 rounded text-xs ${
                           record.letterGrade.startsWith('A')
-                            ? 'bg-indigo-50 text-indigo-700 border border-indigo-200'
+                            ? 'bg-indigo-950/80 text-indigo-300 border border-indigo-800/80'
                             : record.letterGrade.startsWith('B')
-                            ? 'bg-blue-50 text-blue-700 border border-blue-200'
+                            ? 'bg-blue-950/80 text-blue-300 border border-blue-800/80'
                             : record.letterGrade.startsWith('C')
-                            ? 'bg-slate-100 text-slate-700 border border-slate-200'
+                            ? 'bg-slate-800 text-slate-300 border border-slate-700'
                             : record.letterGrade.startsWith('D')
-                            ? 'bg-amber-50 text-amber-700 border border-amber-200'
-                            : 'bg-rose-50 text-rose-700 border border-rose-200'
+                            ? 'bg-amber-950/80 text-amber-300 border border-amber-800/80'
+                            : 'bg-rose-950/80 text-rose-300 border border-rose-800/80'
                         }`}
                       >
                         {record.letterGrade}
                       </span>
                     </td>
 
-                    <td className={`${isCompactMode ? 'py-1 px-3' : 'py-2 px-3'} text-center font-mono font-semibold text-slate-700`}>
+                    <td className={`${isCompactMode ? 'py-1 px-3' : 'py-2 px-3'} text-center font-mono font-semibold text-slate-300`}>
                       {record.gpaPoint.toFixed(1)}
                     </td>
 
@@ -801,8 +801,8 @@ export const GradingView = () => {
                       <span
                         className={`text-[10px] font-mono font-medium ${
                           record.status === 'Published'
-                            ? 'text-emerald-700'
-                            : 'text-slate-400'
+                            ? 'text-emerald-400 font-semibold'
+                            : 'text-slate-500'
                         }`}
                       >
                         {record.status}
@@ -812,7 +812,7 @@ export const GradingView = () => {
                     <td className={`${isCompactMode ? 'py-1 px-3' : 'py-2 px-3'} text-right`}>
                       <button
                         onClick={() => openTranscript(student, record)}
-                        className="inline-flex items-center gap-1 text-indigo-600 hover:text-indigo-800 font-medium text-[11px]"
+                        className="inline-flex items-center gap-1 text-indigo-400 hover:text-indigo-300 font-medium text-[11px] cursor-pointer"
                       >
                         <span>Report</span>
                         <ExternalLink className="w-3 h-3" />
